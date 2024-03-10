@@ -20,7 +20,7 @@ class CoffeeShopApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       onGenerateTitle: (context) => AppLocalizations.of(context)!.title,
       theme: theme,
-      home: MenuScreen(),
+      home: const MenuScreen(),
       
     );
   }
