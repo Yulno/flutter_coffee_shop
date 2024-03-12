@@ -1,9 +1,20 @@
-class CoffeeCardClass {
-  CoffeeCardClass(this.icon, this.name, this.price);
-  String icon;
-  String name;
-  String price;
-  
-}
+class CoffeeCardModel {
+  final String name;
+  final int price;
+  final String? icon;
 
-var card1 = CoffeeCardClass("assets/removal.png", "Олеато", "139 руб");
+  const CoffeeCardModel({
+    required this.name,
+    required this.price,
+    this.icon,
+  });
+
+  factory CoffeeCardModel.fromJSON(Map<String, dynamic> json) {
+    return CoffeeCardModel(
+      icon: json['icon'],
+      name: json['name'],
+      price: json['price'],
+    );
+  }
+
+}
