@@ -1,52 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
-import 'package:flutter_coffee_shop/src/theme/theme.dart';
+import 'package:flutter_coffee_shop/src/features/menu/models/coffee_title_model.dart';
+import 'package:flutter_coffee_shop/src/features/menu/view/widgets/coffee_card.dart';
 
 class Category extends StatelessWidget {
-  final List<String> themes = [
-    "Черный кофе",
-    "Кофе с молоком",
-    "Чай",
-    "Авторские напитки",
-  ];
+  final CategoryModel category;
 
-  Category({super.key});
+  const Category({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.only(top: 16, left: 32),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: themes.map((text) {
-                  return TextButton(
-                    onPressed: () => {},
-                    style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(150, 36),
-                        backgroundColor: AppColors.blue,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
-                        padding: const EdgeInsets.all(8),
-                        alignment: Alignment.center),
-                    child: Text(
-                      text,
-                      style: theme.primaryTextTheme.titleLarge,
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Text(
+            category.categoryName,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-        ],
-      ),
+        ),
+        GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 16.0,
+            crossAxisSpacing: 16.0,
+            mainAxisExtent: 196,
+          ),
+          itemCount: category.cards.length,
+          itemBuilder: (context, index) {
+            return CoffeeCard(card: category.cards[index]);
+          },
+        ),
+      ],
     );
   }
 }
