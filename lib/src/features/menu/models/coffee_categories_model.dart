@@ -27,7 +27,7 @@ const categories = [
     categoryName: 'Авторские напитки',
     cards: [
       CoffeeCardModel(name: 'Авторский', price: 200),
-      CoffeeCardModel(name: 'Цвеочный', price: 200),
+      CoffeeCardModel(name: 'Цветочный', price: 200),
     ],
   ),
 ];
