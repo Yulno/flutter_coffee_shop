@@ -15,4 +15,6 @@ class CategoryModel {
       cards: json['cards'],
     );
   }
+
+  static fromJson(i) {}
 }

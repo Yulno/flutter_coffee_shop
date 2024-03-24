@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_coffee_shop/src/common/network/api.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/coffee_title_model.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_coffee_shop/src/features/menu/models/coffee_card_model.d
 abstract class MenuRepository {
   Future<List<CategoryModel>> getCategories();
   Future<CoffeeCardModel> getCoffeeCard(int id);
+  Future<void> postOrder(Map<CoffeeCardModel, int> items);
 }
 
 class MenuRepositoryImpl implements MenuRepository {
@@ -18,37 +20,59 @@ class MenuRepositoryImpl implements MenuRepository {
     required Uri uri,
     required GetData Function(dynamic data) builder,
   }) async {
+    try {
       final response = await dio.get(uri.toString());
-      if (response.statusCode == 200 ) {
-          final data = json.decode(response.data);
-          return builder(data);}
-      else {
-          throw Exception('Failed to load');}
+      if (response.statusCode == 200) {
+        final data = json.decode(response.data);
+        return builder(data);
+      } else {
+        throw Exception('Failed to load');
       }
+    } on SocketException catch (_) {
+      throw Exception('No internet connection');
+    }
   }
 
-  Future<PostData> _postData<PostData>({
+  @override
+  Future<bool> postOrder(Map<CoffeeCardModel, int> items) =>
+      _postData(uri: api.order(), sendingData: {
+        "positions": items.map(
+          (key, value) => MapEntry(key.id.toString(), value),
+        ),
+        "token": "<FCM Registration Token>"
+      });
+
+  Future<bool> _postData({
     required Uri uri,
-    required PostData Function(dynamic data) builder,
+    required Object sendingData,
   }) async {
-      final response = await dio.post(uri.toString());
-      if (response.statusCode == 201 ) {
-          final data = json.decode(response.data);
-          return builder(data);}
-      else {
-          throw Exception('Failed to load');}
+    try {
+      final request = sendingData;
+      final response = await dio.post(
+        uri.toString(),
+        data: json.encode(request),
+      );
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        throw Exception('Failed to load');
       }
+    } on SocketException catch (_) {
+      throw Exception('No internet connection');
+    }
   }
-  
+
   @override
-  Future<List<CategoryModel>> getCategories() {
-    // TODO: implement getCategories
-    throw UnimplementedError();
-  }
-  
+  Future<List<CategoryModel>> getCategories({int? page, int? limit}) =>
+      _getData(
+          uri: api.categories(page: page, limit: limit),
+          builder: (data) => (data as List)
+              .map<CategoryModel>((i) => CategoryModel.fromJson(i))
+              .toList());
+
   @override
-  Future<CoffeeCardModel> getCoffeeCard(int id) {
-    // TODO: implement getCoffeeCard
-    throw UnimplementedError();
-  }
+  Future<CoffeeCardModel> getCoffeeCard(int id) => _getData(
+        uri: api.card(id),
+        builder: (data) => CoffeeCardModel.fromJson(data),
+      );
 }
