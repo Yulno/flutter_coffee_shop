@@ -1,43 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_coffee_shop/src/features/menu/bloc/cart/cart_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/coffee_card_model.dart';
 import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter_coffee_shop/src/theme/image_sources.dart';
 
-class CoffeeCard extends StatefulWidget {
+class CoffeeCard extends StatelessWidget {
   final CoffeeCardModel card;
 
   const CoffeeCard({super.key, required this.card});
 
-  @override
-  State<CoffeeCard> createState() => _CoffeeCardState();
-}
-
-class _CoffeeCardState extends State<CoffeeCard> {
-  bool get showQuantityButtons => _quantity > 0;
-
-  int _quantity = 0;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 180,
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxHeight: 100),
-                  child: widget.card.icon != null
-                      ? Image.network(widget.card.icon!)
-                      : Image.asset(ImageSources.coffeeIcon),
+                  child: Image.network(
+                    card.icon,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
+                    errorBuilder: (context, error, stackTrace) =>
+                        Image.asset(ImageSources.coffeeIcon),
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
-                  widget.card.name,
+                  card.name,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
@@ -45,7 +49,10 @@ class _CoffeeCardState extends State<CoffeeCard> {
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: SizedBox(
                   height: 24,
-                  child: showQuantityButtons
+                  child: BlocProvider.of<CartBloc>(context, listen: true)
+                          .state
+                          .cartItems
+                          .containsKey(card)
                       ? Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,9 +65,8 @@ class _CoffeeCardState extends State<CoffeeCard> {
                                     color: AppColors.blue),
                                 child: IconButton(
                                   onPressed: () {
-                                    setState(() {
-                                      _quantity--;
-                                    });
+                                    BlocProvider.of<CartBloc>(context)
+                                        .add(RemoveCoffee(card));
                                   },
                                   icon: const Icon(
                                     Icons.remove,
@@ -85,12 +91,15 @@ class _CoffeeCardState extends State<CoffeeCard> {
                                       color: AppColors.blue,
                                     ),
                                     child: Center(
-                                      child: Text(
-                                        '$_quantity',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall,
-                                      ),
+                                      child: BlocBuilder<CartBloc, CartState>(
+                                          builder: (context, state) {
+                                        return Text(
+                                          '${state.cartItems[card]}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                        );
+                                      }),
                                     ),
                                   ),
                                 ),
@@ -104,11 +113,8 @@ class _CoffeeCardState extends State<CoffeeCard> {
                                     color: AppColors.blue),
                                 child: IconButton(
                                   onPressed: () {
-                                    setState(() {
-                                      if (_quantity < 10) {
-                                        _quantity++;
-                                      }
-                                    });
+                                    BlocProvider.of<CartBloc>(context)
+                                        .add(AddCoffee(card));
                                   },
                                   icon: const Icon(
                                     Icons.add,
@@ -122,12 +128,11 @@ class _CoffeeCardState extends State<CoffeeCard> {
                         )
                       : FilledButton(
                           onPressed: () {
-                            setState(() {
-                              _quantity = 1;
-                            });
+                            BlocProvider.of<CartBloc>(context)
+                                .add(AddCoffee(card));
                           },
                           child: Text(
-                            '${widget.card.price} руб',
+                            '${card.price} руб',
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),
@@ -138,6 +143,5 @@ class _CoffeeCardState extends State<CoffeeCard> {
         ),
       ),
     );
-  }
 }
-
+}
