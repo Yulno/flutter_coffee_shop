@@ -13,10 +13,10 @@ class CoffeeCardModel {
 
   factory CoffeeCardModel.fromJSON(Map<String, dynamic> json) {
     return CoffeeCardModel(
-      id: json['id'],
-      name: json['name'],
-      price: json['price'],
-      icon: json['icon']
+      id: json['id'] as int,
+      name: json['name'] as String,
+      price: json['price'] as int,
+      icon: json['icon']  as String
     );
   }
 

@@ -23,7 +23,7 @@ class MenuRepositoryImpl implements MenuRepository {
     try {
       final response = await dio.get(uri.toString());
       if (response.statusCode == 200) {
-        final data = json.decode(response.data);
+        final data = json.decode(response.data.toString());
         return builder(data);
       } else {
         throw Exception('Failed to load');
@@ -62,17 +62,19 @@ class MenuRepositoryImpl implements MenuRepository {
     }
   }
 
-  @override
-  Future<List<CategoryModel>> getCategories({int? page, int? limit}) =>
-      _getData(
-          uri: api.categories(page: page, limit: limit),
-          builder: (data) => (data as List)
-              .map<CategoryModel>((i) => CategoryModel.fromJson(i))
-              .toList());
-
-  @override
-  Future<CoffeeCardModel> getCoffeeCard(int id) => _getData(
-        uri: api.card(id),
-        builder: (data) => CoffeeCardModel.fromJson(data),
-      );
+  @override 
+  Future<List<CategoryModel>> getCategories({int? page, int? limit}) => 
+    _getData( 
+        uri: api.categories(page: page, limit: limit), 
+        builder: (data) => (data as List)
+            .map<CategoryModel>((i) => CategoryModel.fromJSON(i as Map<String, dynamic>)) 
+            .toList()); 
+ 
+  @override 
+  Future<CoffeeCardModel> getCoffeeCard(int id) => _getData( 
+    uri: api.card(id), 
+    builder: (data) => CoffeeCardModel.fromJSON(data as Map<String, dynamic>), 
+  );
 }
+
+

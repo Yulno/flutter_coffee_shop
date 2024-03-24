@@ -11,8 +11,8 @@ class CategoryModel {
 
   factory CategoryModel.fromJSON(Map<String, dynamic> json) {
     return CategoryModel(
-      categoryName: json['categoryName'],
-      cards: json['cards'],
+      categoryName: json['categoryName'] as String,
+      cards: json['cards'] as List<CoffeeCardModel>,
     );
   }
 
