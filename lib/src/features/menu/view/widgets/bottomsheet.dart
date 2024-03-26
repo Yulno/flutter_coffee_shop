@@ -50,6 +50,8 @@ class CartBottomSheet extends StatelessWidget {
                     content: Text(AppLocalizations.of(context)!.success),
                   ),
                 );
+                BlocProvider.of<CartBloc>(context).add(const DeleteOrder());
+                Navigator.of(context).pop();
               }
               if (state.status == CartStatus.failure) {
                 ScaffoldMessenger.of(context).showSnackBar(
