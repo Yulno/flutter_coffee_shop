@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/cart/cart_bloc_bloc.dart';
@@ -42,8 +41,26 @@ class CartBottomSheet extends StatelessWidget {
               ),
             ),
           ),
-            Container (
-              child: ElevatedButton(
+          BlocListener<CartBloc, CartState>(
+            listener: (context, state) {
+              if (state.status == CartStatus.success) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    duration: const Duration(seconds: 2),
+                    content: Text(AppLocalizations.of(context)!.success),
+                  ),
+                );
+              }
+              if (state.status == CartStatus.failure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    duration: const Duration(seconds: 2),
+                    content: Text(AppLocalizations.of(context)!.error),
+                  ),
+                );
+              }
+            },
+            child: ElevatedButton(
               onPressed: () {
                 BlocProvider.of<CartBloc>(context).add(const PostOrder());
               },
