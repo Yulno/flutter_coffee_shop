@@ -11,34 +11,34 @@ final theme = ThemeData(
   ),
   textTheme: const TextTheme(
     titleLarge: TextStyle(
-    fontFamily: 'Roboto600',
-    fontSize: 32,
-    color: AppColors.black,
+      fontFamily: 'Roboto600',
+      fontSize: 32,
+      color: AppColors.black,
+    ),
+    titleMedium: TextStyle(
+      fontFamily: 'Roboto500',
+      fontSize: 16,
+      color: AppColors.black,
+    ),
+    labelLarge: TextStyle(
+      fontFamily: 'Roboto400',
+      fontSize: 24,
+      color: AppColors.white,
+    ),
+    bodyMedium: TextStyle(
+      fontFamily: 'Roboto400',
+      fontSize: 14,
+      color: AppColors.black,
+    ),
+    bodySmall: TextStyle(
+      fontFamily: 'Roboto400',
+      fontSize: 12,
+      color: AppColors.white,
+    ),
   ),
-  titleMedium: TextStyle(
-    fontFamily: 'Roboto500',
-    fontSize: 16,
-    color: AppColors.black,
-  ),
-  bodyMedium: TextStyle(
-    fontFamily: 'Roboto400',
-    fontSize: 14,
-    color: AppColors.black,
-  ),
-  bodySmall: TextStyle(
-    fontFamily: 'Roboto400',
-    fontSize: 12,
-    color: AppColors.white,
-  ),
-  ),
-
   filledButtonTheme: const FilledButtonThemeData(
     style: ButtonStyle(
       backgroundColor: MaterialStatePropertyAll(AppColors.blue),
     ),
   ),
 );
-
-
-
-

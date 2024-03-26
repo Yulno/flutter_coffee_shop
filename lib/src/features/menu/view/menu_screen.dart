@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_coffee_shop/src/features/menu/bloc/cart/cart_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/coffee_title_model.dart';
+import 'package:flutter_coffee_shop/src/features/menu/view/widgets/bottomsheet.dart';
 import 'package:flutter_coffee_shop/src/features/menu/view/widgets/category.dart';
 import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -29,7 +32,7 @@ class _MenuScreenState extends State<MenuScreen> {
     itemListener = ItemPositionsListener.create();
 
     categoryKeys = {
-      for (var category in widget.categories) category.categoryName: GlobalKey()
+      for (var category in widget.categories) category.categoryName: GlobalKey(),
     };
 
     itemListener.itemPositions.addListener(() {
@@ -54,8 +57,8 @@ class _MenuScreenState extends State<MenuScreen> {
   void menuScrollToCategory(int ind) async {
     inProgress = true;
     _menuController.scrollTo(
-        index: ind, duration: const Duration(milliseconds: 200));
-    await Future.delayed(const Duration(milliseconds: 200));
+        index: ind, duration: const Duration(milliseconds: 200),);
+    await Future.delayed(const Duration(milliseconds: 200),);
     inProgress = false;
   }
 
@@ -64,7 +67,7 @@ class _MenuScreenState extends State<MenuScreen> {
         curve: Curves.easeOut,
         opacityAnimationWeights: [20, 20, 60],
         index: ind,
-        duration: const Duration(milliseconds: 300));
+        duration: const Duration(milliseconds: 300),);
   }
 
   @override
@@ -94,13 +97,14 @@ class _MenuScreenState extends State<MenuScreen> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: index == current
                               ? AppColors.blue
-                              : AppColors.white),
+                              : AppColors.white,),
                       child: Text(
                         category.categoryName,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: index == current
-                                ? AppColors.white
-                                : AppColors.black),
+                              color: index == current
+                                  ? AppColors.white
+                                  : AppColors.black,
+                            ),
                       ),
                     ),
                   );
@@ -123,6 +127,30 @@ class _MenuScreenState extends State<MenuScreen> {
             },
             itemCount: widget.categories.length,
           ),
+        ),
+        floatingActionButton: BlocBuilder<CartBloc, CartState>(
+          builder: (context, state) {
+            if (state.status == CartStatus.filled) {
+              return FloatingActionButton(
+                backgroundColor: AppColors.blue,
+                onPressed: () => {
+                  showModalBottomSheet<dynamic>(
+                    backgroundColor: AppColors.white,
+                    context: context,
+                    builder: (_) => BlocProvider.value(
+                      value: BlocProvider.of<CartBloc>(context),
+                      child: const CartBottomSheet(),
+                    ),
+                  ),
+                },
+                child: const Icon(
+                  Icons.local_mall,
+                  color: AppColors.white,
+                ),
+              );
+            }
+            return Container();
+          },
         ),
       ),
     );
