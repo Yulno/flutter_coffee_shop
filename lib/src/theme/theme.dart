@@ -25,6 +25,11 @@ final theme = ThemeData(
       fontSize: 24,
       color: AppColors.white,
     ),
+    labelMedium: TextStyle(
+      fontFamily: 'Roboto700',
+      fontSize: 24,
+      color: AppColors.black,
+    ),
     bodyMedium: TextStyle(
       fontFamily: 'Roboto400',
       fontSize: 14,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/cart/cart_bloc_bloc.dart';
-import 'package:flutter_coffee_shop/src/features/menu/view/widgets/coffee_card.dart';
 import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_coffee_shop/src/features/menu/view/widgets/bottomsheet_scroll.dart';
 
 class CartBottomSheet extends StatelessWidget {
   const CartBottomSheet({super.key});
@@ -19,26 +19,21 @@ class CartBottomSheet extends StatelessWidget {
             children: [
               Text(
                 AppLocalizations.of(context)!.cart,
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.labelMedium,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  BlocProvider.of<CartBloc>(context).add(const DeleteOrder());
+                  Navigator.of(context).pop();
+                },
                 icon: const Icon(Icons.delete),
               ),
             ],
           ),
           const Divider(),
           Expanded(
-            child: ListView.builder(
-              itemCount:
-                  BlocProvider.of<CartBloc>(context).state.cartItems.length,
-              itemBuilder: (context, index) => CoffeeCard(
-                card: (BlocProvider.of<CartBloc>(context)
-                    .state
-                    .cartItems
-                    .keys
-                    .toList())[index],
-              ),
+            child: BottomSheetScroll(
+              order: BlocProvider.of<CartBloc>(context).state.cartItems,
             ),
           ),
           BlocListener<CartBloc, CartState>(
@@ -50,8 +45,6 @@ class CartBottomSheet extends StatelessWidget {
                     content: Text(AppLocalizations.of(context)!.success),
                   ),
                 );
-                BlocProvider.of<CartBloc>(context).add(const DeleteOrder());
-                Navigator.of(context).pop();
               }
               if (state.status == CartStatus.failure) {
                 ScaffoldMessenger.of(context).showSnackBar(
