@@ -9,7 +9,6 @@ final class MenuState extends Equatable {
 
   const MenuState({this.categories, this.items, required this.status});
 
-
   MenuState copyWith({
     List<CategoryModel>? categories,
     List<CoffeeCardModel>? items,

@@ -11,7 +11,7 @@ part 'menu_bloc_event.dart';
 part 'menu_bloc_state.dart';
 
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
-  MenuBloc(this._repository) : super(const MenuState(status: MenuStatus.idle)) {
+  MenuBloc(this._repository) : super(const MenuState(status: MenuStatus.idle, items: [], categories: [])) {
     on<LoadCategoryEvent>(_loadCategory);
     on<LoadPageEvent>(_loadPage);
   }
@@ -27,21 +27,30 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     emit(MenuState(items: state.items, status: MenuStatus.loading));
     try {
       final categories = await _repository.getCategories();
-      emit(MenuState(
+      emit(
+        MenuState(
           categories: categories,
           items: List.empty(),
-          status: MenuStatus.success,),);
+          status: MenuStatus.success,
+        ),
+      );
     } on Object {
-      emit(MenuState(
+      emit(
+        MenuState(
           categories: state.categories,
           items: state.items,
-          status: MenuStatus.error,),);
+          status: MenuStatus.error,
+        ),
+      );
       rethrow;
     } finally {
-      emit(MenuState(
+      emit(
+        MenuState(
           categories: state.categories,
           items: state.items,
-          status: MenuStatus.idle,),);
+          status: MenuStatus.idle,
+        ),
+      );
     }
   }
 
@@ -52,27 +61,35 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     emit(MenuState(items: state.items, status: MenuStatus.loading));
     try {
       final items = await _repository.getCards(
-          category: _currentPaginatedCategory!,
-          page: _currentPage,
-          limit: _pageLimit,);
-      if (items.length < _pageLimit) {
-        
-      }
-      emit(MenuState(
+        category: _currentPaginatedCategory!,
+        page: _currentPage,
+        limit: _pageLimit,
+      );
+      if (items.length < _pageLimit) {}
+      emit(
+        MenuState(
           categories: state.categories,
           items: items,
-          status: MenuStatus.success,),);
+          status: MenuStatus.success,
+        ),
+      );
     } on Object {
-      emit(MenuState(
+      emit(
+        MenuState(
           categories: state.categories,
           items: state.items,
-          status: MenuStatus.error,),);
+          status: MenuStatus.error,
+        ),
+      );
       rethrow;
     } finally {
-      emit(MenuState(
+      emit(
+        MenuState(
           categories: state.categories,
           items: state.items,
-          status: MenuStatus.idle,),);
+          status: MenuStatus.idle,
+        ),
+      );
     }
   }
 }

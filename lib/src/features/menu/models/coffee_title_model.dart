@@ -13,6 +13,4 @@ class CategoryModel {
       id: json['id'] as int,
     );
   }
-
-  static fromJson(i) {}
 }

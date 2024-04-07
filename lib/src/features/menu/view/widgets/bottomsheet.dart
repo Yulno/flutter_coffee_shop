@@ -40,13 +40,13 @@ class CartBottomSheet extends StatelessWidget {
               const Divider(),
               Expanded(
                 child: BottomSheetScroll(
-                  order: BlocProvider.of<CartBloc>(context).state.cartItems,
+                  order: context.watch<CartBloc>().state.cartItems,
                 ),
               ),
               BlocListener<CartBloc, CartState>(
                 listener: (context, state) {
                   if (state.status == CartStatus.success) {
-                    BlocProvider.of<CartBloc>(context).add(
+                    context.read<CartBloc>().add(
                       const DeleteOrder(),
                     );
                     Navigator.of(context).pop();
@@ -68,7 +68,7 @@ class CartBottomSheet extends StatelessWidget {
                 },
                 child: ElevatedButton(
                   onPressed: () {
-                    BlocProvider.of<CartBloc>(context).add(const PostOrder());
+                    context.read<CartBloc>().add(const PostOrder());
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.maxFinite, 56),

@@ -87,54 +87,39 @@ class _MenuScreenState extends State<MenuScreen> {
                   preferredSize: const Size.fromHeight((40)),
                   child: SizedBox(
                     height: 40,
-                    child: BlocBuilder<MenuBloc, MenuState>(
-                      builder: (context, state) {
-                        if (state.status != MenuStatus.error &&
-                            state.items != null &&
-                            state.categories != null) {
-                          return ScrollablePositionedList.builder(
-                            itemScrollController: _appBarController,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: context
-                                .read<MenuBloc>()
-                                .state
-                                .categories!
-                                .length,
-                            itemBuilder: (context, index) {
-                              final category = context
-                                  .read<MenuBloc>()
-                                  .state
-                                  .categories![index];
-                              return Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    setCurrent(index);
-                                    menuScrollToCategory(index);
-                                    appBarScrollToCategory(index);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    shadowColor: AppColors.transparent,
-                                    backgroundColor: index == current
-                                        ? AppColors.blue
-                                        : AppColors.white,
-                                  ),
-                                  child: Text(
-                                    category.categoryName,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          color: index == current
-                                              ? AppColors.white
-                                              : AppColors.black,
-                                        ),
-                                  ),
-                                ),
-                              );
+                    child: ScrollablePositionedList.builder(
+                      itemScrollController: _appBarController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.categories!.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              context.read<MenuBloc>().state.categories![index];
+                              setCurrent(index);
+                              menuScrollToCategory(index);
+                              appBarScrollToCategory(index);
                             },
-                          );
-                        } else {}
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: AppColors.transparent,
+                              backgroundColor: index == current
+                                  ? AppColors.blue
+                                  : AppColors.white,
+                            ),
+                            child: Text(
+                              state.categories![index].categoryName,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color: index == current
+                                        ? AppColors.white
+                                        : AppColors.black,
+                                  ),
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -142,33 +127,20 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: BlocBuilder<MenuBloc, MenuState>(
-                  builder: (context, state) {
-                    if (state.status != MenuStatus.error &&
-                        state.categories != null &&
-                        state.items != null) {
-                      return ScrollablePositionedList.builder(
-                        itemScrollController: _menuController,
-                        itemPositionsListener: itemListener,
-                        itemBuilder: (context, index) {
-                          final category =
-                              context.read<MenuBloc>().state.categories![index];
-                          final cards = context
-                              .read<MenuBloc>()
-                              .state
-                              .items!
-                              .where((e) => e.category.id == category.id)
-                              .toList();
-                          return Category(
-                            category: category,
-                            cards: cards,
-                          );
-                        },
-                        itemCount:
-                            context.read<MenuBloc>().state.categories!.length,
-                      );
-                    } else {}
+                child: ScrollablePositionedList.builder(
+                  itemScrollController: _menuController,
+                  itemPositionsListener: itemListener,
+                  itemBuilder: (context, index) {
+                    final category = state.categories![index];
+                    final cards = state.items!
+                        .where((e) => e.category.id == category.id)
+                        .toList();
+                    return Category(
+                      category: category,
+                      cards: cards,
+                    );
                   },
+                  itemCount: state.categories!.length,
                 ),
               ),
               floatingActionButton: BlocBuilder<CartBloc, CartState>(
@@ -192,12 +164,15 @@ class _MenuScreenState extends State<MenuScreen> {
                       ),
                     );
                   }
-                  return Container();
+                  return const SizedBox.shrink();
                 },
               ),
             ),
           );
         }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }

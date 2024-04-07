@@ -18,9 +18,9 @@ class CoffeeCardModel {
   factory CoffeeCardModel.fromJSON(Map<String, dynamic> json) {
     return CoffeeCardModel(
       id: json['id'] as int,
+      icon: json['imageUrl'] as String,
       name: json['name'] as String,
       price: json['prices'][0]['value'] as int,
-      icon: json['imageUrl'] as String,
       category:
           CategoryModel.fromJSON(json['category'] as Map<String, dynamic>),
     );

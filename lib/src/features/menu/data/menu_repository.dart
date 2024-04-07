@@ -10,7 +10,7 @@ abstract class MenuRepository {
   Future<CoffeeCardModel> getCoffeeCard(int id);
   Future<void> postOrder(Map<CoffeeCardModel, int> items);
   Future<List<CoffeeCardModel>> getCards(
-      {int? page, int? limit, CategoryModel? category});
+      {int? page, int? limit, CategoryModel? category,});
 }
 
 class MenuRepositoryImpl implements MenuRepository {
@@ -72,18 +72,18 @@ class MenuRepositoryImpl implements MenuRepository {
         uri: api.categories(page: page, limit: limit),
         builder: (data) => (data as List)
             .map<CategoryModel>(
-                (i) => CategoryModel.fromJSON(i as Map<String, dynamic>))
+                (i) => CategoryModel.fromJSON(i as Map<String, dynamic>),)
             .toList(),
       );
 
   @override
   Future<List<CoffeeCardModel>> getCards(
-          {int? page, int? limit, CategoryModel? category}) =>
+          {int? page, int? limit, CategoryModel? category,}) =>
       _getData(
         uri: api.cards(page: page, limit: limit, category: category?.id),
         builder: (data) => (data as List)
             .map<CoffeeCardModel>(
-                (i) => CoffeeCardModel.fromJSON(i as Map<String, dynamic>))
+                (i) => CoffeeCardModel.fromJSON(i as Map<String, dynamic>),)
             .toList(),
       );
 
