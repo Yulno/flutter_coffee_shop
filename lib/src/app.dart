@@ -31,7 +31,6 @@ class CoffeeShopApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => MenuBloc(context.read<MenuRepositoryImpl>(),),
-                    ),
           ),
         ],
         child: const MenuScreen(),
