@@ -16,7 +16,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       if (count < 10) {
         items[event.coffee] = count + 1;
       }
-      emit(state.copyWith(status: CartStatus.filled, cartItems: items));
+      emit(state.copyWith(cartItems: items));
     });
 
     on<RemoveCoffee>((event, emit) async {
@@ -28,10 +28,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         items[newItem] = (items[newItem]! - 1);
       }
       if (items.isEmpty) {
-        emit(state.copyWith(
-            status: CartStatus.initial, cartItems: <CoffeeCardModel, int>{}));
+        emit(state.copyWith(cartItems: <CoffeeCardModel, int>{},),);
       } else {
-        emit(state.copyWith(status: CartStatus.filled, cartItems: items));
+        emit(state.copyWith(cartItems: items),);
       }
     });
 
@@ -41,16 +40,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         emit(state.copyWith(status: CartStatus.loading));
         await _repository.postOrder(items);
         emit(state.copyWith(status: CartStatus.success));
-        emit(state.copyWith(status: CartStatus.initial));
       } catch (_) {
-        emit(state.copyWith(status: CartStatus.failure, cartItems: items));
+        emit(state.copyWith(status: CartStatus.error, cartItems: items),);
         rethrow;
       }
     });
 
     on<DeleteOrder>((event, emit) async {
-      emit(state.copyWith(
-          status: CartStatus.initial, cartItems: <CoffeeCardModel, int>{}));
+      emit(state.copyWith(cartItems: <CoffeeCardModel, int>{},),);
     });
   }
 

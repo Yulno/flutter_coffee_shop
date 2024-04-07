@@ -14,7 +14,7 @@ void main() {
   runZonedGuarded(
       () => runApp(RepositoryProvider.value(
           value: menuRepository,
-          child: const CoffeeShopApp())), (error, stack) {
+          child: const CoffeeShopApp(),),), (error, stack) {
     log(error.toString(), name: 'App Error', stackTrace: stack);
   });
 }

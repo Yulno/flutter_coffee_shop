@@ -1,13 +1,13 @@
 part of 'cart_bloc_bloc.dart';
 
-enum CartStatus { initial, filled, loading, success, failure }
+enum CartStatus { loading, success, error, idle }
 
 final class CartState extends Equatable {
   final Map<CoffeeCardModel, int> cartItems;
   final CartStatus status;
 
   const CartState({
-    this.status = CartStatus.initial,
+    this.status = CartStatus.idle,
     required this.cartItems,
   });
 
@@ -23,7 +23,7 @@ final class CartState extends Equatable {
 
   @override
   String toString() {
-    return 'CartStatus { status: $status, cartItems: ${cartItems.length} }';
+    return '''CartStatus { status: $status, cartItems: ${cartItems.length} }''';
   }
 
   @override
