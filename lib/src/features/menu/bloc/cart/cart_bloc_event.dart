@@ -14,15 +14,6 @@ class AddCoffee extends CartEvent {
   String toString() => 'AddCoffee { id: ${coffee.id} }';
 }
 
-class RemoveCoffee extends CartEvent {
-  final CoffeeCardModel coffee;
-
-  const RemoveCoffee(this.coffee);
-
-  @override
-  String toString() => 'RemoveCoffee { id: ${coffee.id} }';
-}
-
 class PostOrder extends CartEvent {
   const PostOrder();
 

@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 
 class Logger { 
   static void log(String message) {
-    print(message);
+    debugPrint(message);
   }
 }
 

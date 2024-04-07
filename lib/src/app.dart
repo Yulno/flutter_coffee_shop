@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/cart/cart_bloc_bloc.dart';
+import 'package:flutter_coffee_shop/src/features/menu/bloc/menu/menu_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/menu_repository.dart';
-import 'package:flutter_coffee_shop/src/features/menu/models/coffee_categories_model.dart';
 import 'package:flutter_coffee_shop/src/features/menu/view/menu_screen.dart';
 import 'package:flutter_coffee_shop/src/theme/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -27,7 +27,6 @@ class CoffeeShopApp extends StatelessWidget {
       home: MultiBlocProvider(
         providers: [
           BlocProvider(
-            lazy: false,
             create: (context) => CartBloc(context.read<MenuRepositoryImpl>()),
           ),
           BlocProvider(
@@ -35,7 +34,7 @@ class CoffeeShopApp extends StatelessWidget {
                     ),
           ),
         ],
-        child: const MenuScreen(categories: categories),
+        child: const MenuScreen(),
       ),
     );
   }

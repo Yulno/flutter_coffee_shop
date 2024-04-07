@@ -12,45 +12,42 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       : super(const CartState(cartItems: <CoffeeCardModel, int>{})) {
     on<AddCoffee>((event, emit) async {
       Map<CoffeeCardModel, int> items = Map.from(state.cartItems);
-      final count = items[event.coffee] ?? 0;
-      if (count < 10) {
-        items[event.coffee] = count + 1;
-      }
-      emit(state.copyWith(status: CartStatus.filled, cartItems: items));
-    });
-
-    on<RemoveCoffee>((event, emit) async {
-      Map<CoffeeCardModel, int> items = Map.from(state.cartItems);
-      CoffeeCardModel newItem = event.coffee;
-      if (items[newItem]! == 1) {
-        items.remove(newItem);
-      } else {
-        items[newItem] = (items[newItem]! - 1);
-      }
-      if (items.isEmpty) {
-        emit(state.copyWith(
-            status: CartStatus.initial, cartItems: <CoffeeCardModel, int>{}));
-      } else {
-        emit(state.copyWith(status: CartStatus.filled, cartItems: items));
-      }
+      emit(
+        state.copyWith(
+          cartItems: items,
+        ),
+      );
     });
 
     on<PostOrder>((event, emit) async {
+      emit(state.copyWith(status: CartStatus.loading));
       Map<CoffeeCardModel, int> items = Map.from(state.cartItems);
       try {
-        emit(state.copyWith(status: CartStatus.loading));
         await _repository.postOrder(items);
-        emit(state.copyWith(status: CartStatus.success));
-        emit(state.copyWith(status: CartStatus.initial));
+        emit(state.copyWith(
+          status: CartStatus.success,
+          cartItems: <CoffeeCardModel, int>{},
+        ),);
       } catch (_) {
-        emit(state.copyWith(status: CartStatus.failure, cartItems: items));
+        emit(state.copyWith(
+          status: CartStatus.error,
+        ),);
         rethrow;
+      } finally {
+        emit(
+          state.copyWith(
+            status: CartStatus.idle,
+          ),
+        );
       }
     });
 
     on<DeleteOrder>((event, emit) async {
-      emit(state.copyWith(
-          status: CartStatus.initial, cartItems: <CoffeeCardModel, int>{}));
+      emit(
+        state.copyWith(
+          cartItems: <CoffeeCardModel, int>{},
+        ),
+      );
     });
   }
 

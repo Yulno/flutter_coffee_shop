@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_coffee_shop/src/features/menu/models/coffee_card_model.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/coffee_title_model.dart';
 import 'package:flutter_coffee_shop/src/features/menu/view/widgets/coffee_card.dart';
 
 class Category extends StatelessWidget {
   final CategoryModel category;
-
-  const Category({super.key, required this.category});
+  final List<CoffeeCardModel> cards;
+  const Category({super.key, required this.cards, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +30,9 @@ class Category extends StatelessWidget {
             crossAxisSpacing: 16.0,
             mainAxisExtent: 196,
           ),
-          itemCount: category.cards.length,
+          itemCount: cards.length,
           itemBuilder: (context, index) {
-            return CoffeeCard(card: category.cards[index]);
+            return CoffeeCard(card: cards[index]);
           },
         ),
       ],

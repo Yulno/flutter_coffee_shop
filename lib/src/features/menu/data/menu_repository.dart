@@ -6,9 +6,11 @@ import 'package:flutter_coffee_shop/src/features/menu/models/coffee_title_model.
 import 'package:flutter_coffee_shop/src/features/menu/models/coffee_card_model.dart';
 
 abstract class MenuRepository {
-  Future<List<CategoryModel>> getCategories();
+  Future<List<CategoryModel>> getCategories({int? page, int? limit});
   Future<CoffeeCardModel> getCoffeeCard(int id);
   Future<void> postOrder(Map<CoffeeCardModel, int> items);
+  Future<List<CoffeeCardModel>> getCards(
+      {int? page, int? limit, CategoryModel? category,});
 }
 
 class MenuRepositoryImpl implements MenuRepository {
@@ -23,7 +25,7 @@ class MenuRepositoryImpl implements MenuRepository {
     try {
       final response = await dio.get(uri.toString());
       if (response.statusCode == 200) {
-        final data = json.decode(response.data.toString());
+        final data = response.data['data'];
         return builder(data);
       } else {
         throw Exception('Failed to load');
@@ -34,13 +36,15 @@ class MenuRepositoryImpl implements MenuRepository {
   }
 
   @override
-  Future<bool> postOrder(Map<CoffeeCardModel, int> items) =>
-      _postData(uri: api.order(), sendingData: {
-        "positions": items.map(
-          (key, value) => MapEntry(key.id.toString(), value),
-        ),
-        "token": "<FCM Registration Token>"
-      });
+  Future<bool> postOrder(Map<CoffeeCardModel, int> items) => _postData(
+        uri: api.order(),
+        sendingData: {
+          "positions": items.map(
+            (key, value) => MapEntry(key.id.toString(), value),
+          ),
+          "token": "<FCM Registration Token>",
+        },
+      );
 
   Future<bool> _postData({
     required Uri uri,
@@ -62,19 +66,31 @@ class MenuRepositoryImpl implements MenuRepository {
     }
   }
 
-  @override 
-  Future<List<CategoryModel>> getCategories({int? page, int? limit}) => 
-    _getData( 
-        uri: api.categories(page: page, limit: limit), 
+  @override
+  Future<List<CategoryModel>> getCategories({int? page, int? limit}) =>
+      _getData(
+        uri: api.categories(page: page, limit: limit),
         builder: (data) => (data as List)
-            .map<CategoryModel>((i) => CategoryModel.fromJSON(i as Map<String, dynamic>)) 
-            .toList()); 
- 
-  @override 
-  Future<CoffeeCardModel> getCoffeeCard(int id) => _getData( 
-    uri: api.card(id), 
-    builder: (data) => CoffeeCardModel.fromJSON(data as Map<String, dynamic>), 
-  );
+            .map<CategoryModel>(
+                (i) => CategoryModel.fromJSON(i as Map<String, dynamic>),)
+            .toList(),
+      );
+
+  @override
+  Future<List<CoffeeCardModel>> getCards(
+          {int? page, int? limit, CategoryModel? category,}) =>
+      _getData(
+        uri: api.cards(page: page, limit: limit, category: category?.id),
+        builder: (data) => (data as List)
+            .map<CoffeeCardModel>(
+                (i) => CoffeeCardModel.fromJSON(i as Map<String, dynamic>),)
+            .toList(),
+      );
+
+  @override
+  Future<CoffeeCardModel> getCoffeeCard(int id) => _getData(
+        uri: api.card(id),
+        builder: (data) =>
+            CoffeeCardModel.fromJSON(data as Map<String, dynamic>),
+      );
 }
-
-

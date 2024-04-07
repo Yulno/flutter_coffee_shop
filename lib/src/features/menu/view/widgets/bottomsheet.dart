@@ -12,65 +12,78 @@ class CartBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Scaffold(
+        body: ColoredBox(
+          color: AppColors.white,
+          child: Column(
             children: [
-              Text(
-                AppLocalizations.of(context)!.cart,
-                style: Theme.of(context).textTheme.labelMedium,
+              const SizedBox(
+                height: 10,
               ),
-              IconButton(
-                onPressed: () {
-                  BlocProvider.of<CartBloc>(context).add(const DeleteOrder());
-                  Navigator.of(context).pop();
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.cart,
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      BlocProvider.of<CartBloc>(context)
+                          .add(const DeleteOrder());
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(Icons.delete),
+                  ),
+                ],
+              ),
+              const Divider(),
+              Expanded(
+                child: BottomSheetScroll(
+                  order: context.watch<CartBloc>().state.cartItems,
+                ),
+              ),
+              BlocListener<CartBloc, CartState>(
+                listener: (context, state) {
+                  if (state.status == CartStatus.success) {
+                    context.read<CartBloc>().add(
+                      const DeleteOrder(),
+                    );
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: const Duration(seconds: 2),
+                        content: Text(AppLocalizations.of(context)!.success),
+                      ),
+                    );
+                  }
+                  if (state.status == CartStatus.error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: const Duration(seconds: 2),
+                        content: Text(AppLocalizations.of(context)!.error),
+                      ),
+                    );
+                  }
                 },
-                icon: const Icon(Icons.delete),
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.read<CartBloc>().add(const PostOrder());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.maxFinite, 56),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: AppColors.blue,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.order,
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ),
               ),
             ],
           ),
-          const Divider(),
-          Expanded(
-            child: BottomSheetScroll(
-              order: BlocProvider.of<CartBloc>(context).state.cartItems,
-            ),
-          ),
-          BlocListener<CartBloc, CartState>(
-            listener: (context, state) {
-              if (state.status == CartStatus.success) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    duration: const Duration(seconds: 2),
-                    content: Text(AppLocalizations.of(context)!.success),
-                  ),
-                );
-              }
-              if (state.status == CartStatus.failure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    duration: const Duration(seconds: 2),
-                    content: Text(AppLocalizations.of(context)!.error),
-                  ),
-                );
-              }
-            },
-            child: ElevatedButton(
-              onPressed: () {
-                BlocProvider.of<CartBloc>(context).add(const PostOrder());
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.maxFinite, 56),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: AppColors.blue,
-              ),
-              child: Text(
-                AppLocalizations.of(context)!.order,
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
