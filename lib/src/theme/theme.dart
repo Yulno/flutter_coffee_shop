@@ -5,6 +5,7 @@ final theme = ThemeData(
   cardTheme: const CardTheme(
     color: AppColors.white,
     margin: EdgeInsets.all(0),
+    shadowColor: AppColors.transparent,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(16)),
     ),

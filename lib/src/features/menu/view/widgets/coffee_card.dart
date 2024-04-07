@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/cart/cart_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/coffee_card_model.dart';
 import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_coffee_shop/src/theme/image_sources.dart';
 
 class CoffeeCard extends StatelessWidget {
@@ -16,23 +17,19 @@ class CoffeeCard extends StatelessWidget {
       width: 180,
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
           child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 100),
-                  child: Image.network(
-                    card.icon,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    },
-                    errorBuilder: (context, error, stackTrace) =>
+                child: SizedBox(
+                  height: 100,
+                  child: CachedNetworkImage(
+                    imageUrl: card.icon,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, error) =>
                         Image.asset(ImageSources.coffeeIcon),
                     fit: BoxFit.contain,
                   ),
@@ -61,8 +58,9 @@ class CoffeeCard extends StatelessWidget {
                               width: 24,
                               child: Ink(
                                 decoration: const ShapeDecoration(
-                                    shape: CircleBorder(),
-                                    color: AppColors.blue),
+                                  shape: CircleBorder(),
+                                  color: AppColors.blue,
+                                ),
                                 child: IconButton(
                                   onPressed: () {
                                     BlocProvider.of<CartBloc>(context)
@@ -92,14 +90,15 @@ class CoffeeCard extends StatelessWidget {
                                     ),
                                     child: Center(
                                       child: BlocBuilder<CartBloc, CartState>(
-                                          builder: (context, state) {
-                                        return Text(
-                                          '${state.cartItems[card]}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall,
-                                        );
-                                      }),
+                                        builder: (context, state) {
+                                          return Text(
+                                            '${state.cartItems[card]}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall,
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -109,8 +108,9 @@ class CoffeeCard extends StatelessWidget {
                               width: 24,
                               child: Ink(
                                 decoration: const ShapeDecoration(
-                                    shape: CircleBorder(),
-                                    color: AppColors.blue),
+                                  shape: CircleBorder(),
+                                  color: AppColors.blue,
+                                ),
                                 child: IconButton(
                                   onPressed: () {
                                     BlocProvider.of<CartBloc>(context)
@@ -143,5 +143,5 @@ class CoffeeCard extends StatelessWidget {
         ),
       ),
     );
-}
+  }
 }

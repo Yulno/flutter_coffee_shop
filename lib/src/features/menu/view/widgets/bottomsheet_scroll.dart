@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/coffee_card_model.dart';
 import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
@@ -10,13 +11,18 @@ class BottomSheetScroll extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<CoffeeCardModel> coffee = order.entries.expand((entry) => List.generate(entry.value, (_) => entry.key)).toList(); 
+    final List<CoffeeCardModel> coffee = order.entries
+        .expand((entry) => List.generate(entry.value, (_) => entry.key))
+        .toList();
     return ListView.separated(
       itemBuilder: (context, index) {
         return ListTile(
-          leading: Image.network(
-            coffee[index].icon,
-            errorBuilder: (context, error, stackTrace) =>
+          leading: CachedNetworkImage(
+            imageUrl: coffee[index].icon,
+            placeholder: (context, url) => const Center(
+              child: SizedBox.shrink(),
+            ),
+            errorWidget: (context, url, error) =>
                 Image.asset(ImageSources.coffeeIcon),
             fit: BoxFit.contain,
             width: 55,
