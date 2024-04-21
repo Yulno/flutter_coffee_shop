@@ -10,12 +10,15 @@ class CartBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return DecoratedBox(
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(18),
+        ),
+   child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
       child: Scaffold(
-        body: ColoredBox(
-          color: AppColors.white,
-          child: Column(
+        body: Column(
             children: [
               const SizedBox(
                 height: 10,
@@ -47,13 +50,14 @@ class CartBottomSheet extends StatelessWidget {
                 listener: (context, state) {
                   if (state.status == CartStatus.success) {
                     context.read<CartBloc>().add(
-                      const DeleteOrder(),
-                    );
+                          const DeleteOrder(),
+                        );
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         duration: const Duration(seconds: 2),
-                        content: Text(AppLocalizations.of(context)!.success),
+                        content: Text(AppLocalizations.of(context)!.success,
+                            style: Theme.of(context).textTheme.labelLarge,),
                       ),
                     );
                   }
@@ -61,7 +65,8 @@ class CartBottomSheet extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         duration: const Duration(seconds: 2),
-                        content: Text(AppLocalizations.of(context)!.error),
+                        content: Text(AppLocalizations.of(context)!.error,
+                            style: Theme.of(context).textTheme.labelLarge,),
                       ),
                     );
                   }
