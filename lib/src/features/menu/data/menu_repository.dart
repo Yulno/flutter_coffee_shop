@@ -6,7 +6,7 @@ import 'package:flutter_coffee_shop/src/features/menu/models/coffee_title_model.
 import 'package:flutter_coffee_shop/src/features/menu/models/coffee_card_model.dart';
 
 abstract class MenuRepository {
-  Future<List<CategoryModel>> getCategories({int? page, int? limit});
+  Future<List<CategoryModel>> getCategory({int? page, int? limit});
   Future<CoffeeCardModel> getCoffeeCard(int id);
   Future<void> postOrder(Map<CoffeeCardModel, int> items);
   Future<List<CoffeeCardModel>> getCards(
@@ -67,7 +67,7 @@ class MenuRepositoryImpl implements MenuRepository {
   }
 
   @override
-  Future<List<CategoryModel>> getCategories({int? page, int? limit}) =>
+  Future<List<CategoryModel>> getCategory({int? page, int? limit}) =>
       _getData(
         uri: api.categories(page: page, limit: limit),
         builder: (data) => (data as List)

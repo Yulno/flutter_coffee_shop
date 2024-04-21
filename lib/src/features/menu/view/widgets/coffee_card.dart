@@ -16,136 +16,165 @@ class CoffeeCard extends StatefulWidget {
 }
 
 class _CoffeeCardState extends State<CoffeeCard> {
+  bool get selectTheCount => _counter > 0;
+  int _counter = 0;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-      return SizedBox(
-        width: 180,
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: SizedBox(
-                    height: 100,
-                    child: CachedNetworkImage(
-                      imageUrl: widget.card.icon,
-                      placeholder: (context, url) => const Center(
-                        child: SizedBox.shrink(),
+    return BlocBuilder<CartBloc, CartState>(
+      builder: (context, state) {
+        return SizedBox(
+          width: 180,
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: SizedBox(
+                      height: 100,
+                      child: CachedNetworkImage(
+                        imageUrl: widget.card.icon,
+                        placeholder: (context, url) => const Center(
+                          child: SizedBox.shrink(),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            Image.asset(ImageSources.coffeeIcon),
+                        fit: BoxFit.contain,
                       ),
-                      errorWidget: (context, url, error) =>
-                          Image.asset(ImageSources.coffeeIcon),
-                      fit: BoxFit.contain,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Text(
-                    widget.card.name,
-                    style: Theme.of(context).textTheme.titleMedium,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Text(
+                      widget.card.name,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: SizedBox(
-                    height: 24,
-                    child: state.cartItems.containsKey(widget.card)
-                        ? Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: 24,
-                                child: Ink(
-                                  decoration: const ShapeDecoration(
-                                    shape: CircleBorder(),
-                                    color: AppColors.blue,
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      context.read<CartBloc>().add(AddCoffee(widget.card),);
-                                    },
-                                    icon: const Icon(
-                                      Icons.remove,
-                                      size: 9,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: SizedBox(
+                      height: 24,
+                      child: state.cartItems.containsKey(widget.card)
+                          ? Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: 24,
+                                  child: Ink(
+                                    decoration: const ShapeDecoration(
+                                      shape: CircleBorder(),
+                                      color: AppColors.blue,
                                     ),
-                                    color: AppColors.white,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding:
-                                      MediaQuery.sizeOf(context).width > 450
-                                          ? const EdgeInsets.symmetric(
-                                              horizontal: 8,)
-                                          : const EdgeInsets.symmetric(
-                                              horizontal: 2,),
-                                  child: SizedBox(
-                                    height: 24,
-                                    child: DecoratedBox(
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(16),
-                                        ),
-                                        color: AppColors.blue,
-                                      ),
-                                      child: Center(
-                                        child: BlocBuilder<CartBloc, CartState>(
-                                          builder: (context, state) {
-                                            return Text(
-                                              '${state.cartItems[widget.card]}',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _counter--;
+                                        });
+                                        context.read<CartBloc>().add(
+                                              AddCoffee(widget.card, 0),
                                             );
-                                          },
-                                        ),
+                                      },
+                                      icon: const Icon(
+                                        Icons.remove,
+                                        size: 9,
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 24,
-                                child: Ink(
-                                  decoration: const ShapeDecoration(
-                                    shape: CircleBorder(),
-                                    color: AppColors.blue,
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      context.read<CartBloc>().add(AddCoffee(widget.card),);
-                                    },
-                                    icon: const Icon(
-                                      Icons.add,
-                                      size: 9,
                                       color: AppColors.white,
                                     ),
                                   ),
                                 ),
+                                Expanded(
+                                  child: Padding(
+                                    padding:
+                                        MediaQuery.sizeOf(context).width > 450
+                                            ? const EdgeInsets.symmetric(
+                                                horizontal: 8,
+                                              )
+                                            : const EdgeInsets.symmetric(
+                                                horizontal: 2,
+                                              ),
+                                    child: SizedBox(
+                                      height: 24,
+                                      child: DecoratedBox(
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(16),
+                                          ),
+                                          color: AppColors.blue,
+                                        ),
+                                        child: Center(
+                                          child:
+                                              BlocListener<CartBloc, CartState>(
+                                            listenWhen: (previous, current) =>
+                                                current.status ==
+                                                CartStatus.success,
+                                            listener: (context, state) {
+                                              _counter = 0;
+                                            },
+                                            child: Text(
+                                              '$_counter',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 24,
+                                  child: Ink(
+                                    decoration: const ShapeDecoration(
+                                      shape: CircleBorder(),
+                                      color: AppColors.blue,
+                                    ),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          if (_counter < 10) {
+                                            _counter++;
+                                            context.read<CartBloc>().add(
+                                                  AddCoffee(
+                                                      widget.card, _counter,),
+                                                );
+                                          }
+                                        });
+                                      },
+                                      icon: const Icon(
+                                        Icons.add,
+                                        size: 9,
+                                        color: AppColors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : FilledButton(
+                              onPressed: () {
+                                setState(() {
+                                  _counter = 1;
+                                });
+                                context.read<CartBloc>().add(
+                                      AddCoffee(widget.card, 1),
+                                    );
+                              },
+                              child: Text(
+                                '${widget.card.price} руб',
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
-                            ],
-                          )
-                        : FilledButton(
-                            onPressed: () {
-                              context.read<CartBloc>().add(AddCoffee(widget.card),);
-                            },
-                            child: Text(
-                              '${widget.card.price} руб',
-                              style: Theme.of(context).textTheme.bodySmall,
                             ),
-                          ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    },);
+        );
+      },
+    );
   }
 }

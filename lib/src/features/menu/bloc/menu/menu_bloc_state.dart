@@ -3,11 +3,11 @@ part of 'menu_bloc_bloc.dart';
 enum MenuStatus { loading, success, error, idle }
 
 final class MenuState extends Equatable {
-  final MenuStatus status;
+  final MenuStatus status = MenuStatus.idle;
   final List<CategoryModel>? categories;
   final List<CoffeeCardModel>? items;
 
-  const MenuState({this.categories, this.items, required this.status});
+  const MenuState({required this.categories, required this.items,  required MenuStatus status,});
 
   MenuState copyWith({
     List<CategoryModel>? categories,

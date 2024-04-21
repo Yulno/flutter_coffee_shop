@@ -1,17 +1,21 @@
 part of 'cart_bloc_bloc.dart';
 
 @immutable
-sealed class CartEvent {
+sealed class CartEvent extends Equatable {
   const CartEvent();
 }
 
 class AddCoffee extends CartEvent {
-  final CoffeeCardModel coffee;
+  final CoffeeCardModel card;
+  final int count;
 
-  const AddCoffee(this.coffee);
+  const AddCoffee(this.card, this.count);
 
   @override
-  String toString() => 'AddCoffee { id: ${coffee.id} }';
+  String toString() => 'AddCoffee { id: ${card.id} }';
+  
+  @override
+  List<Object?> get props => [card,];
 }
 
 class PostOrder extends CartEvent {
@@ -19,6 +23,9 @@ class PostOrder extends CartEvent {
 
   @override
   String toString() => 'PostOrder';
+
+  @override
+  List<Object?> get props => [];
 }
 
 class DeleteOrder extends CartEvent {
@@ -26,4 +33,7 @@ class DeleteOrder extends CartEvent {
 
   @override
   String toString() => 'DeleteOrder';
+
+  @override
+  List<Object?> get props => [];
 }
