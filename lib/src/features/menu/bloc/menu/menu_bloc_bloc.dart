@@ -11,7 +11,14 @@ part 'menu_bloc_event.dart';
 part 'menu_bloc_state.dart';
 
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
-  MenuBloc(this._repository) : super(const MenuState(status: MenuStatus.idle, items: [], categories: [])) {
+  MenuBloc(this._repository)
+      : super(
+          const MenuState(
+            status: MenuStatus.idle,
+            items: [],
+            categories: [],
+          ),
+        ) {
     on<LoadCategoryEvent>(_loadCategory);
     on<LoadPageEvent>(_loadPage);
   }
@@ -19,24 +26,27 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   final MenuRepository _repository;
 
   CategoryModel? _currentPaginatedCategory;
-  final int _currentPage = 0;
+  int _currentPage = 0;
 
   final int _pageLimit = 25;
 
   Future<void> _loadCategory(event, emit) async {
-    emit(MenuState(items: state.items, status: MenuStatus.loading));
+    emit(state.copyWith(items: state.items, status: MenuStatus.loading));
     try {
-      final categories = await _repository.getCategories();
+      final categories = await _repository.getCategory();
       emit(
-        MenuState(
+        state.copyWith(
           categories: categories,
           items: List.empty(),
           status: MenuStatus.success,
         ),
       );
+      add(
+        const LoadPageEvent(),
+      );
     } on Object {
       emit(
-        MenuState(
+        state.copyWith(
           categories: state.categories,
           items: state.items,
           status: MenuStatus.error,
@@ -45,7 +55,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       rethrow;
     } finally {
       emit(
-        MenuState(
+        state.copyWith(
           categories: state.categories,
           items: state.items,
           status: MenuStatus.idle,
@@ -55,27 +65,42 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   }
 
   Future<void> _loadPage(event, emit) async {
-    _currentPaginatedCategory ??= state.categories?.first;
-    if (_currentPaginatedCategory == null) return;
-
-    emit(MenuState(items: state.items, status: MenuStatus.loading));
+    List<CategoryModel>? categories = state.categories;
+    if (categories!.isEmpty) return;
+    CategoryModel? currentCategory = _currentPaginatedCategory;
+    currentCategory ??= categories.first;
+    emit(
+      state.copyWith(items: state.items, status: MenuStatus.loading),
+    );
     try {
+      final List<CoffeeCardModel> previousItems =
+          List<CoffeeCardModel>.from(state.items!);
       final items = await _repository.getCards(
-        category: _currentPaginatedCategory!,
+        category: currentCategory,
         page: _currentPage,
         limit: _pageLimit,
       );
-      if (items.length < _pageLimit) {}
+      _currentPage += 1;
+      if (items.length < _pageLimit) {
+        if (currentCategory != categories.last) {
+          int nextPaginatedCategoryIndex =
+              categories.indexOf(currentCategory) + 1;
+          currentCategory = categories[nextPaginatedCategoryIndex];
+          _currentPage = 0;
+        }
+      }
+      _currentPaginatedCategory = currentCategory;
+      previousItems.addAll(items);
       emit(
-        MenuState(
+        state.copyWith(
           categories: state.categories,
-          items: items,
+          items: previousItems,
           status: MenuStatus.success,
         ),
       );
     } on Object {
       emit(
-        MenuState(
+        state.copyWith(
           categories: state.categories,
           items: state.items,
           status: MenuStatus.error,
@@ -84,7 +109,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       rethrow;
     } finally {
       emit(
-        MenuState(
+        state.copyWith(
           categories: state.categories,
           items: state.items,
           status: MenuStatus.idle,
@@ -92,4 +117,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       );
     }
   }
+
+  
+    
+  
 }

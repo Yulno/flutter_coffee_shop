@@ -28,7 +28,7 @@ class Api {
     );
   }
 
-  Uri cards({int? page, int? limit, int? category}) {
+  Uri cards({int? page, int? limit, int? category}) {  
     return _buildUri(
       endpoint: 'products',
       parameters: () => query(

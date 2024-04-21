@@ -5,19 +5,23 @@ enum CartStatus { loading, success, error, idle }
 final class CartState extends Equatable {
   final Map<CoffeeCardModel, int> cartItems;
   final CartStatus status;
+  final double price;
 
   const CartState({
     this.status = CartStatus.idle,
     required this.cartItems,
+    this.price = 0,
   });
 
   CartState copyWith({
     CartStatus? status,
     Map<CoffeeCardModel, int>? cartItems,
+    double? price,
   }) {
     return CartState(
       status: status ?? this.status,
       cartItems: cartItems ?? this.cartItems,
+      price: price ?? this.price,
     );
   }
 
@@ -27,5 +31,5 @@ final class CartState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, cartItems];
+  List<Object> get props => [status, cartItems, price,];
 }
