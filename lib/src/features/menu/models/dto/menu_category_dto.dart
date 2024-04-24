@@ -1,3 +1,0 @@
-class MenuCategoryDto {
-  const MenuCategoryDto();
-}

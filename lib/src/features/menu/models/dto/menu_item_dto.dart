@@ -1,3 +1,0 @@
-class MenuItemDto {
-  const MenuItemDto();
-}
