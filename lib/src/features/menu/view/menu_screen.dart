@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_coffee_shop/src/features/menu/bloc/cart/cart_bloc_bloc.dart';
+import 'package:flutter_coffee_shop/src/features/menu/bloc/order/order_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/menu/menu_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/view/widgets/bottomsheet.dart';
 import 'package:flutter_coffee_shop/src/features/menu/view/widgets/category.dart';
@@ -143,9 +143,9 @@ class _MenuScreenState extends State<MenuScreen> {
                   itemCount: state.categories!.length,
                 ),
               ),
-              floatingActionButton: BlocBuilder<CartBloc, CartState>(
+              floatingActionButton: BlocBuilder<OrderBloc, OrderState>(
                 builder: (context, state) {
-                  if (state.cartItems.isNotEmpty) {
+                  if (state.orderItems.isNotEmpty) {
                     return FloatingActionButton(
                       backgroundColor: AppColors.blue,
                       onPressed: () => {
@@ -153,8 +153,8 @@ class _MenuScreenState extends State<MenuScreen> {
                           backgroundColor: AppColors.white,
                           context: context,
                           builder: (_) => BlocProvider.value(
-                            value: BlocProvider.of<CartBloc>(context),
-                            child: const CartBottomSheet(),
+                            value: BlocProvider.of<OrderBloc>(context),
+                            child: const OrderBottomSheet(),
                           ),
                         ),
                       },

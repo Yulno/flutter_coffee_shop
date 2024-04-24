@@ -1,49 +1,53 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_coffee_shop/src/features/menu/data/menu_repository.dart';
+import 'package:flutter_coffee_shop/src/features/menu/data/order_repository.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/item_model.dart';
 import 'package:meta/meta.dart';
 
-part 'cart_bloc_event.dart';
-part 'cart_bloc_state.dart';
+part 'order_bloc_event.dart';
+part 'order_bloc_state.dart';
 
-class CartBloc extends Bloc<CartEvent, CartState> {
-  CartBloc(this._repository)
-      : super(const CartState(cartItems: <ItemModel, int>{})) {
+class OrderBloc extends Bloc<OrderEvent, OrderState> {
+  OrderBloc(this._repository)
+      : super(const OrderState(orderItems: <ItemModel, int>{})) {
     on<AddCoffee>((event, emit) async {
-      Map<ItemModel, int> items = Map.from(state.cartItems);
+      Map<ItemModel, int> items = Map.from(state.orderItems);
       final count = event.count;
-      items[event.item] = count;
+      if (count == 0) {
+        items.remove(event.item);
+      } else {
+        items[event.item] = count;
+      }
       emit(
         state.copyWith(
-          cartItems: items,
+          orderItems: items,
           price: _priceCounter(items),
         ),
       );
     });
 
     on<PostOrder>((event, emit) async {
-      emit(state.copyWith(status: CartStatus.loading));
-      Map<ItemModel, int> items = Map.from(state.cartItems);
+      emit(state.copyWith(status: OrderStatus.loading));
+      Map<ItemModel, int> items = Map.from(state.orderItems);
       try {
         await _repository.postOrder(items);
         emit(
           state.copyWith(
-            status: CartStatus.success,
-            cartItems: <ItemModel, int>{},
+            status: OrderStatus.success,
+            orderItems: <ItemModel, int>{},
           ),
         );
       } catch (_) {
         emit(
           state.copyWith(
-            status: CartStatus.error,
+            status: OrderStatus.error,
           ),
         );
         rethrow;
       } finally {
         emit(
           state.copyWith(
-            status: CartStatus.idle,
+            status: OrderStatus.idle,
           ),
         );
       }
@@ -52,7 +56,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<DeleteOrder>((event, emit) async {
       emit(
         state.copyWith(
-          cartItems: <ItemModel, int>{},
+          orderItems: <ItemModel, int>{},
         ),
       );
     });
@@ -66,5 +70,5 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     return prices;
   }
 
-  final MenuRepository _repository;
+  final IOrderRepository _repository;
 }

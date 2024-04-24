@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter_coffee_shop/src/features/menu/data/menu_repository.dart';
+import 'package:flutter_coffee_shop/src/features/menu/data/item_repository.dart';
+import 'package:flutter_coffee_shop/src/features/menu/data/category_repository.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/category_model.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/item_model.dart';
 import 'package:equatable/equatable.dart';
@@ -11,7 +12,7 @@ part 'menu_bloc_event.dart';
 part 'menu_bloc_state.dart';
 
 class MenuBloc extends Bloc<MenuEvent, MenuState> {
-  MenuBloc(this._repository)
+  MenuBloc(this._categoriesRepository, this._itemsRepository,)
       : super(
           const MenuState(
             status: MenuStatus.idle,
@@ -23,7 +24,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     on<LoadPageEvent>(_loadPage);
   }
 
-  final MenuRepository _repository;
+  final ICategoriesRepository _categoriesRepository;
+  final IItemsRepository _itemsRepository;
 
   CategoryModel? _currentPaginatedCategory;
   int _currentPage = 0;
@@ -33,7 +35,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   Future<void> _loadCategory(event, emit) async {
     emit(state.copyWith(items: state.items, status: MenuStatus.loading));
     try {
-      final categories = await _repository.getCategory();
+      final categories = await _categoriesRepository.loadCategories();
       emit(
         state.copyWith(
           categories: categories,
@@ -75,7 +77,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     try {
       final List<ItemModel> previousItems =
           List<ItemModel>.from(state.items!);
-      final items = await _repository.getItems(
+      final items = await _itemsRepository.loadItems(
         category: currentCategory,
         page: _currentPage,
         limit: _pageLimit,

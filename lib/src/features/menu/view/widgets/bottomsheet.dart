@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_coffee_shop/src/features/menu/bloc/cart/cart_bloc_bloc.dart';
+import 'package:flutter_coffee_shop/src/features/menu/bloc/order/order_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_coffee_shop/src/features/menu/view/widgets/bottomsheet_scroll.dart';
 
-class CartBottomSheet extends StatelessWidget {
-  const CartBottomSheet({super.key});
+class OrderBottomSheet extends StatelessWidget {
+  const OrderBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +27,12 @@ class CartBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.cart,
+                    AppLocalizations.of(context)!.order,
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                   IconButton(
                     onPressed: () {
-                      BlocProvider.of<CartBloc>(context)
+                      BlocProvider.of<OrderBloc>(context)
                           .add(const DeleteOrder());
                       Navigator.of(context).pop();
                     },
@@ -43,13 +43,13 @@ class CartBottomSheet extends StatelessWidget {
               const Divider(),
               Expanded(
                 child: BottomSheetScroll(
-                  order: context.watch<CartBloc>().state.cartItems,
+                  order: context.watch<OrderBloc>().state.orderItems,
                 ),
               ),
-              BlocListener<CartBloc, CartState>(
+              BlocListener<OrderBloc, OrderState>(
                 listener: (context, state) {
-                  if (state.status == CartStatus.success) {
-                    context.read<CartBloc>().add(
+                  if (state.status == OrderStatus.success) {
+                    context.read<OrderBloc>().add(
                           const DeleteOrder(),
                         );
                     Navigator.of(context).pop();
@@ -61,7 +61,7 @@ class CartBottomSheet extends StatelessWidget {
                       ),
                     );
                   }
-                  if (state.status == CartStatus.error) {
+                  if (state.status == OrderStatus.error) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         duration: const Duration(seconds: 2),
@@ -73,7 +73,7 @@ class CartBottomSheet extends StatelessWidget {
                 },
                 child: ElevatedButton(
                   onPressed: () {
-                    context.read<CartBloc>().add(const PostOrder());
+                    context.read<OrderBloc>().add(const PostOrder());
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.maxFinite, 56),

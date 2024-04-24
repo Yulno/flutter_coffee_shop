@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_coffee_shop/src/features/menu/bloc/cart/cart_bloc_bloc.dart';
+import 'package:flutter_coffee_shop/src/features/menu/bloc/order/order_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/item_model.dart';
 import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,7 +20,7 @@ class _ItemState extends State<Item> {
   int _counter = 0;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartBloc, CartState>(
+    return BlocBuilder<OrderBloc, OrderState>(
       builder: (context, state) {
         return SizedBox(
           width: 180,
@@ -55,7 +55,7 @@ class _ItemState extends State<Item> {
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: SizedBox(
                       height: 24,
-                      child: state.cartItems.containsKey(widget.item)
+                      child: state.orderItems.containsKey(widget.item)
                           ? Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,7 +72,7 @@ class _ItemState extends State<Item> {
                                         setState(() {
                                           _counter--;
                                         });
-                                        context.read<CartBloc>().add(
+                                        context.read<OrderBloc>().add(
                                               AddCoffee(widget.item, 0),
                                             );
                                       },
@@ -105,10 +105,10 @@ class _ItemState extends State<Item> {
                                         ),
                                         child: Center(
                                           child:
-                                              BlocListener<CartBloc, CartState>(
+                                              BlocListener<OrderBloc, OrderState>(
                                             listenWhen: (previous, current) =>
                                                 current.status ==
-                                                CartStatus.success,
+                                                OrderStatus.success,
                                             listener: (context, state) {
                                               _counter = 0;
                                             },
@@ -136,7 +136,7 @@ class _ItemState extends State<Item> {
                                         setState(() {
                                           if (_counter < 10) {
                                             _counter++;
-                                            context.read<CartBloc>().add(
+                                            context.read<OrderBloc>().add(
                                                   AddCoffee(
                                                       widget.item, _counter,),
                                                 );
@@ -158,7 +158,7 @@ class _ItemState extends State<Item> {
                                 setState(() {
                                   _counter = 1;
                                 });
-                                context.read<CartBloc>().add(
+                                context.read<OrderBloc>().add(
                                       AddCoffee(widget.item, 1),
                                     );
                               },

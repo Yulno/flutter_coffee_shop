@@ -1,11 +1,11 @@
-part of 'cart_bloc_bloc.dart';
+part of 'order_bloc_bloc.dart';
 
 @immutable
-sealed class CartEvent extends Equatable {
-  const CartEvent();
+sealed class OrderEvent extends Equatable {
+  const OrderEvent();
 }
 
-class AddCoffee extends CartEvent {
+class AddCoffee extends OrderEvent {
   final ItemModel item;
   final int count;
 
@@ -18,7 +18,7 @@ class AddCoffee extends CartEvent {
   List<Object?> get props => [item,];
 }
 
-class PostOrder extends CartEvent {
+class PostOrder extends OrderEvent {
   const PostOrder();
 
   @override
@@ -28,7 +28,7 @@ class PostOrder extends CartEvent {
   List<Object?> get props => [];
 }
 
-class DeleteOrder extends CartEvent {
+class DeleteOrder extends OrderEvent {
   const DeleteOrder();
 
   @override
