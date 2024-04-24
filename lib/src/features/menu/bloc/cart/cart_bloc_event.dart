@@ -6,16 +6,16 @@ sealed class CartEvent extends Equatable {
 }
 
 class AddCoffee extends CartEvent {
-  final CoffeeCardModel card;
+  final ItemModel item;
   final int count;
 
-  const AddCoffee(this.card, this.count);
+  const AddCoffee(this.item, this.count);
 
   @override
-  String toString() => 'AddCoffee { id: ${card.id} }';
+  String toString() => 'AddCoffee { id: ${item.id} }';
   
   @override
-  List<Object?> get props => [card,];
+  List<Object?> get props => [item,];
 }
 
 class PostOrder extends CartEvent {

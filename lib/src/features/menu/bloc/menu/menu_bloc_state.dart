@@ -5,13 +5,13 @@ enum MenuStatus { loading, success, error, idle }
 final class MenuState extends Equatable {
   final MenuStatus status = MenuStatus.idle;
   final List<CategoryModel>? categories;
-  final List<CoffeeCardModel>? items;
+  final List<ItemModel>? items;
 
   const MenuState({required this.categories, required this.items,  required MenuStatus status,});
 
   MenuState copyWith({
     List<CategoryModel>? categories,
-    List<CoffeeCardModel>? items,
+    List<ItemModel>? items,
     MenuStatus? status,
   }) {
     return MenuState(

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/menu_repository.dart';
-import 'package:flutter_coffee_shop/src/features/menu/models/coffee_title_model.dart';
-import 'package:flutter_coffee_shop/src/features/menu/models/coffee_card_model.dart';
+import 'package:flutter_coffee_shop/src/features/menu/models/category_model.dart';
+import 'package:flutter_coffee_shop/src/features/menu/models/item_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -73,9 +73,9 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       state.copyWith(items: state.items, status: MenuStatus.loading),
     );
     try {
-      final List<CoffeeCardModel> previousItems =
-          List<CoffeeCardModel>.from(state.items!);
-      final items = await _repository.getCards(
+      final List<ItemModel> previousItems =
+          List<ItemModel>.from(state.items!);
+      final items = await _repository.getItems(
         category: currentCategory,
         page: _currentPage,
         limit: _pageLimit,

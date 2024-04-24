@@ -3,7 +3,7 @@ part of 'cart_bloc_bloc.dart';
 enum CartStatus { loading, success, error, idle }
 
 final class CartState extends Equatable {
-  final Map<CoffeeCardModel, int> cartItems;
+  final Map<ItemModel, int> cartItems;
   final CartStatus status;
   final double price;
 
@@ -15,7 +15,7 @@ final class CartState extends Equatable {
 
   CartState copyWith({
     CartStatus? status,
-    Map<CoffeeCardModel, int>? cartItems,
+    Map<ItemModel, int>? cartItems,
     double? price,
   }) {
     return CartState(

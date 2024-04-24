@@ -108,7 +108,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                   : AppColors.white,
                             ),
                             child: Text(
-                              state.categories![index].categoryName,
+                              state.categories![index].slug,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -132,12 +132,12 @@ class _MenuScreenState extends State<MenuScreen> {
                   itemPositionsListener: itemListener,
                   itemBuilder: (context, index) {
                     final category = state.categories![index];
-                    final cards = state.items!
+                    final items = state.items!
                         .where((e) => e.category.id == category.id)
                         .toList();
                     return Category(
                       category: category,
-                      cards: cards,
+                      items: items,
                     );
                   },
                   itemCount: state.categories!.length,

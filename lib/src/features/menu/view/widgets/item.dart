@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/cart/cart_bloc_bloc.dart';
-import 'package:flutter_coffee_shop/src/features/menu/models/coffee_card_model.dart';
+import 'package:flutter_coffee_shop/src/features/menu/models/item_model.dart';
 import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_coffee_shop/src/theme/image_sources.dart';
 
-class CoffeeCard extends StatefulWidget {
-  final CoffeeCardModel card;
+class Item extends StatefulWidget {
+  final ItemModel item;
 
-  const CoffeeCard({super.key, required this.card});
+  const Item({super.key, required this.item});
 
   @override
-  State<CoffeeCard> createState() => _CoffeeCardState();
+  State<Item> createState() => _ItemState();
 }
 
-class _CoffeeCardState extends State<CoffeeCard> {
+class _ItemState extends State<Item> {
   bool get selectTheCount => _counter > 0;
   int _counter = 0;
   @override
@@ -34,7 +34,7 @@ class _CoffeeCardState extends State<CoffeeCard> {
                     child: SizedBox(
                       height: 100,
                       child: CachedNetworkImage(
-                        imageUrl: widget.card.icon,
+                        imageUrl: widget.item.icon,
                         placeholder: (context, url) => const Center(
                           child: SizedBox.shrink(),
                         ),
@@ -47,7 +47,7 @@ class _CoffeeCardState extends State<CoffeeCard> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
-                      widget.card.name,
+                      widget.item.name,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
@@ -55,7 +55,7 @@ class _CoffeeCardState extends State<CoffeeCard> {
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: SizedBox(
                       height: 24,
-                      child: state.cartItems.containsKey(widget.card)
+                      child: state.cartItems.containsKey(widget.item)
                           ? Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,7 +73,7 @@ class _CoffeeCardState extends State<CoffeeCard> {
                                           _counter--;
                                         });
                                         context.read<CartBloc>().add(
-                                              AddCoffee(widget.card, 0),
+                                              AddCoffee(widget.item, 0),
                                             );
                                       },
                                       icon: const Icon(
@@ -138,7 +138,7 @@ class _CoffeeCardState extends State<CoffeeCard> {
                                             _counter++;
                                             context.read<CartBloc>().add(
                                                   AddCoffee(
-                                                      widget.card, _counter,),
+                                                      widget.item, _counter,),
                                                 );
                                           }
                                         });
@@ -159,11 +159,11 @@ class _CoffeeCardState extends State<CoffeeCard> {
                                   _counter = 1;
                                 });
                                 context.read<CartBloc>().add(
-                                      AddCoffee(widget.card, 1),
+                                      AddCoffee(widget.item, 1),
                                     );
                               },
                               child: Text(
-                                '${widget.card.price} руб',
+                                '${widget.item.price} руб',
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ),

@@ -28,7 +28,7 @@ class Api {
     );
   }
 
-  Uri cards({int? page, int? limit, int? category}) {  
+  Uri items({int? page, int? limit, int? category}) {  
     return _buildUri(
       endpoint: 'products',
       parameters: () => query(
@@ -39,7 +39,7 @@ class Api {
     );
   }
 
-  Uri card(int id) {
+  Uri item(int id) {
     return _buildUri(
       endpoint: 'products/$id',
       parameters: () => {},

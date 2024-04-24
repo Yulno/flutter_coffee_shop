@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_coffee_shop/src/common/network/api.dart';
-import 'package:flutter_coffee_shop/src/features/menu/models/coffee_title_model.dart';
-import 'package:flutter_coffee_shop/src/features/menu/models/coffee_card_model.dart';
+import 'package:flutter_coffee_shop/src/features/menu/models/category_model.dart';
+import 'package:flutter_coffee_shop/src/features/menu/models/item_model.dart';
 
 abstract class MenuRepository {
   Future<List<CategoryModel>> getCategory({int? page, int? limit});
-  Future<CoffeeCardModel> getCoffeeCard(int id);
-  Future<void> postOrder(Map<CoffeeCardModel, int> items);
-  Future<List<CoffeeCardModel>> getCards(
+  Future<ItemModel> getItem(int id);
+  Future<void> postOrder(Map<ItemModel, int> items);
+  Future<List<ItemModel>> getItems(
       {int? page, int? limit, CategoryModel? category,});
 }
 
@@ -36,7 +36,7 @@ class MenuRepositoryImpl implements MenuRepository {
   }
 
   @override
-  Future<bool> postOrder(Map<CoffeeCardModel, int> items) => _postData(
+  Future<bool> postOrder(Map<ItemModel, int> items) => _postData(
         uri: api.order(),
         sendingData: {
           "positions": items.map(
@@ -77,20 +77,20 @@ class MenuRepositoryImpl implements MenuRepository {
       );
 
   @override
-  Future<List<CoffeeCardModel>> getCards(
+  Future<List<ItemModel>> getItems(
           {int? page, int? limit, CategoryModel? category,}) =>
       _getData(
-        uri: api.cards(page: page, limit: limit, category: category?.id),
+        uri: api.items(page: page, limit: limit, category: category?.id),
         builder: (data) => (data as List)
-            .map<CoffeeCardModel>(
-                (i) => CoffeeCardModel.fromJSON(i as Map<String, dynamic>),)
+            .map<ItemModel>(
+                (i) => ItemModel.fromJSON(i as Map<String, dynamic>),)
             .toList(),
       );
 
   @override
-  Future<CoffeeCardModel> getCoffeeCard(int id) => _getData(
-        uri: api.card(id),
+  Future<ItemModel> getItem(int id) => _getData(
+        uri: api.item(id),
         builder: (data) =>
-            CoffeeCardModel.fromJSON(data as Map<String, dynamic>),
+            ItemModel.fromJSON(data as Map<String, dynamic>),
       );
 }
