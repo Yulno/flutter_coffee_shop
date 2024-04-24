@@ -27,7 +27,7 @@ class NetworkItemsDataSource implements IItemsDataSource {
         'page': page,
         'limit': limit,
         'category': categoryId,
-      });
+      },);
       if (response.statusCode == 200) {
         final data = response.data['data'] as List;
         return data.map((item) => ItemDto.fromJSON(item as Map<String, dynamic>)).toList();
