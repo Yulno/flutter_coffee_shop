@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_coffee_shop/src/features/map/bloc/map_bloc_bloc.dart';
+import 'package:flutter_coffee_shop/src/features/map/data/map_repository.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/order/order_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/menu/menu_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/category_repository.dart';
-import 'package:flutter_coffee_shop/src/features/menu/data/data_base/database.dart';
+import 'package:flutter_coffee_shop/src/common/data_base/database.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/categories_data_source.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/items_data_source.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/order_data_source.dart';
@@ -70,6 +72,10 @@ class CoffeeShopApp extends StatelessWidget {
               )..add(
                   const LoadCategoryEvent(),
                 ),
+            ),
+            BlocProvider(
+              create: (context) => MapBloc(context.read<ILocationsRepository>())
+                ..add(const LoadMapEvent()),
             ),
           ],
           child: const MenuScreen(),

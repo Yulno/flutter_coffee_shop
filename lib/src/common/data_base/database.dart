@@ -22,7 +22,16 @@ class Items extends Table {
   RealColumn get price => real()();
 }
 
-@DriftDatabase(tables: [Categories, Items])
+class Locations extends Table {
+  TextColumn get address => text()();
+  RealColumn get latitude => real()();
+  RealColumn get longitude => real()();
+
+  @override
+  Set<Column> get primaryKey => {address};
+}
+
+@DriftDatabase(tables: [Categories, Items, Locations])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
@@ -42,4 +51,3 @@ LazyDatabase _openConnection() {
     return NativeDatabase.createInBackground(file);
   });
 }
-

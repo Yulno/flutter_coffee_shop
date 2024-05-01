@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:flutter_coffee_shop/src/features/menu/data/data_base/database.dart';
+import 'package:flutter_coffee_shop/src/common/data_base/database.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/categories_data_source.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/dto/category_dto.dart';
 
