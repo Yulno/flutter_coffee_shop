@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/order/order_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_coffee_shop/src/features/menu/view/widgets/bottomsheet_scroll.dart';
+import 'package:flutter_coffee_shop/src/features/menu/view/widgets/menu_list.dart';
 
 class OrderBottomSheet extends StatelessWidget {
   const OrderBottomSheet({super.key});
@@ -27,7 +27,7 @@ class OrderBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.order,
+                    AppLocalizations.of(context)!.yourOrder,
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                   IconButton(
