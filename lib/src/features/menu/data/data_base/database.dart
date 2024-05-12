@@ -16,10 +16,10 @@ class Categories extends Table {
 class Items extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
-  TextColumn get description => text()();
-  IntColumn get categoryId => integer().references(Categories, #id)();
   TextColumn get icon => text()();
+  TextColumn get description => text()();
   RealColumn get price => real()();
+  IntColumn get categoryId => integer().references(Categories, #id)();
 }
 
 @DriftDatabase(tables: [Categories, Items])
