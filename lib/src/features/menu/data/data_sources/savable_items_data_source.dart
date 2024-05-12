@@ -33,9 +33,9 @@ final class DbItemsDataSource implements ISavableItemsDataSource {
         ItemDto(
           id: item.id,
           name: item.name,
-          description: item.description,
           icon: item.icon,
           price: item.price,
+          description: item.description,
           category: CategoryDto(
             id: category.id,
             slug: category.slug,
@@ -53,8 +53,8 @@ final class DbItemsDataSource implements ISavableItemsDataSource {
             ItemsCompanion.insert(
               id: Value(item.id),
               name: item.name,
-              description: item.description,
               icon: item.icon,
+              description: item.description,
               price: item.price,
               categoryId: item.category.id,
             ),
@@ -73,9 +73,9 @@ final class DbItemsDataSource implements ISavableItemsDataSource {
     return ItemDto(
       id: item.id,
       name: item.name,
-      description: item.description,
       icon: item.icon,
       price: item.price,
+      description: item.description,
       category: CategoryDto(
         id: category.id,
         slug: category.slug,

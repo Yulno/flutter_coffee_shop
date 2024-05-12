@@ -65,8 +65,9 @@ class CoffeeShopApp extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) => MenuBloc(
-                context.read<ICategoriesRepository>(),
                 context.read<IItemsRepository>(),
+                context.read<ICategoriesRepository>(),
+                
               )..add(
                   const LoadCategoryEvent(),
                 ),

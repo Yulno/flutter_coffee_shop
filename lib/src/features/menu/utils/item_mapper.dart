@@ -6,9 +6,9 @@ extension ItemMapper on ItemDto {
   ItemModel toModel() => ItemModel(
         id: id,
         name: name,
-        description: description,
         price: price,
         icon: icon,
+        description: description,
         category: category.toModel(),
       );
 }

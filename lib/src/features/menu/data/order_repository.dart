@@ -4,7 +4,7 @@ import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/order_da
 import 'package:flutter_coffee_shop/src/features/menu/models/item_model.dart';
 
 abstract interface class IOrderRepository {
-  Future<void> postOrder(Map<ItemModel, int> items);
+  Future<void> postOrder(Map<ItemModel, int> products);
 }
 
 final class OrderRepository implements IOrderRepository {
@@ -14,9 +14,9 @@ final class OrderRepository implements IOrderRepository {
       : _networkOrderDataSource = networkOrderDataSource;
 
   @override
-  Future<void> postOrder(Map<ItemModel, int> items) async {
+  Future<void> postOrder(Map<ItemModel, int> products) async {
     try {
-      await _networkOrderDataSource.postOrder(items: items);
+      await _networkOrderDataSource.postOrder(products: products);
     } on SocketException {
       rethrow;
     }

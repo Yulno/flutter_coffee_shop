@@ -55,7 +55,7 @@ class _ItemState extends State<Item> {
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: SizedBox(
                       height: 24,
-                      child: state.orderItems.containsKey(widget.item)
+                      child: selectTheCount
                           ? Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

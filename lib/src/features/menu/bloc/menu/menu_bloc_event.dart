@@ -12,7 +12,7 @@ class LoadCategoryEvent extends MenuEvent {
   String toString() => 'LoadCategoryEvent';
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
 class LoadPageEvent extends MenuEvent {
@@ -22,7 +22,15 @@ class LoadPageEvent extends MenuEvent {
   String toString() => 'LoadPageEvent';
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
+class LoadItemEvent extends MenuEvent {
+  const LoadItemEvent(this.category);
+  final CategoryModel category;
+  @override
+  String toString() => 'LoadItemEvent';
+  @override
+  List<Object> get props => [category];
+}
 

@@ -90,13 +90,13 @@ class _MenuScreenState extends State<MenuScreen> {
                     child: ScrollablePositionedList.builder(
                       itemScrollController: _appBarController,
                       scrollDirection: Axis.horizontal,
-                      itemCount: state.categories!.length,
+                      itemCount: state.categories.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(4),
                           child: ElevatedButton(
                             onPressed: () {
-                              context.read<MenuBloc>().state.categories![index];
+                              context.read<MenuBloc>().state.categories[index];
                               setCurrent(index);
                               menuScrollToCategory(index);
                               appBarScrollToCategory(index);
@@ -108,7 +108,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                   : AppColors.white,
                             ),
                             child: Text(
-                              state.categories![index].slug,
+                              state.categories[index].slug,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -131,21 +131,21 @@ class _MenuScreenState extends State<MenuScreen> {
                   itemScrollController: _menuController,
                   itemPositionsListener: itemListener,
                   itemBuilder: (context, index) {
-                    final category = state.categories![index];
-                    final items = state.items!
+                    final category = state.categories[index];
+                    final cards = state.products
                         .where((e) => e.category.id == category.id)
                         .toList();
                     return Category(
                       category: category,
-                      items: items,
+                      items: cards,
                     );
                   },
-                  itemCount: state.categories!.length,
+                  itemCount: state.categories.length,
                 ),
               ),
               floatingActionButton: BlocBuilder<OrderBloc, OrderState>(
                 builder: (context, state) {
-                  if (state.orderItems.isNotEmpty) {
+                  if (state.orderProducts.isNotEmpty) {
                     return FloatingActionButton(
                       backgroundColor: AppColors.blue,
                       onPressed: () => {

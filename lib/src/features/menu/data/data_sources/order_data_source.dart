@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/item_model.dart';
 
 abstract interface class IOrderDataSource {
-  Future<Map<String, dynamic>> postOrder({required Map<ItemModel, int> items});
+  Future<Map<String, dynamic>> postOrder({required Map<ItemModel, int> products});
 }
 
 class NetworkOrdersDataSource implements IOrderDataSource {
@@ -12,8 +12,11 @@ class NetworkOrdersDataSource implements IOrderDataSource {
   const NetworkOrdersDataSource({required Dio dio}) : _dio = dio;
 
   @override
-  Future<Map<String, dynamic>> postOrder({required Map<ItemModel, int> items}) async {
-    final positions = items.map((item, quantity) => MapEntry(item.id.toString(), quantity));
+  Future<Map<String, dynamic>> postOrder({
+    required Map<ItemModel, int> products,
+  }) async {
+    final positions =
+        products.map((item, quantity) => MapEntry(item.id.toString(), quantity));
     final response = await _dio.post('/orders', data: {'positions': positions});
     if (response.statusCode == 201) {
       return response.data as Map<String, dynamic>;

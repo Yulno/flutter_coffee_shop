@@ -27,7 +27,7 @@ class OrderBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.order,
+                    AppLocalizations.of(context)!.cart,
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                   IconButton(
@@ -43,7 +43,7 @@ class OrderBottomSheet extends StatelessWidget {
               const Divider(),
               Expanded(
                 child: BottomSheetScroll(
-                  order: context.watch<OrderBloc>().state.orderItems,
+                  order: context.watch<OrderBloc>().state.orderProducts,
                 ),
               ),
               BlocListener<OrderBloc, OrderState>(

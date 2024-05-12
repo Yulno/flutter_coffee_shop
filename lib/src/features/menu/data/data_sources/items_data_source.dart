@@ -23,23 +23,28 @@ class NetworkItemsDataSource implements IItemsDataSource {
     int limit = 25,
   }) async {
     try {
-      final response = await _dio.get('/products', queryParameters: {
-        'page': page,
-        'limit': limit,
-        'category': categoryId,
-      },);
+      final response = await _dio.get(
+        '/products',
+        queryParameters: {
+          'page': '$page',
+          'limit': '$limit',
+          'category': '$categoryId',
+        },
+      );
       if (response.statusCode == 200) {
-        final data = response.data['data'] as List;
-        return data.map((item) => ItemDto.fromJSON(item as Map<String, dynamic>)).toList();
+        final data = response.data['data'];
+        if (data is! List) throw const FormatException();
+        return data
+            .map((i) => ItemDto.fromJSON(i as Map<String, dynamic>))
+            .toList();
       } else {
-        throw Exception('Failed to fetch items');
+        throw HttpException('/products with categoryId = $categoryId');
       }
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionError) {
         throw SocketException('/products with categoryId = $categoryId');
-      } else {
-        rethrow;
       }
+      rethrow;
     }
   }
 
@@ -48,16 +53,16 @@ class NetworkItemsDataSource implements IItemsDataSource {
     try {
       final response = await _dio.get('products/$itemId');
       if (response.statusCode == 200) {
-        return ItemDto.fromJSON(response.data['data'] as Map<String, dynamic>);
+        final data = response.data['data'];
+        return ItemDto.fromJSON(data as Map<String, dynamic>);
       } else {
-        throw Exception('Failed to fetch item');
+        throw HttpException('/products/$itemId');
       }
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionError) {
         throw SocketException('/products/$itemId');
-      } else {
-        rethrow;
       }
+      rethrow;
     }
   }
 }

@@ -9,32 +9,32 @@ part 'order_bloc_state.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
   OrderBloc(this._repository)
-      : super(const OrderState(orderItems: <ItemModel, int>{})) {
+      : super(const OrderState(orderProducts: <ItemModel, int>{})) {
     on<AddCoffee>((event, emit) async {
-      Map<ItemModel, int> items = Map.from(state.orderItems);
+      Map<ItemModel, int> products = Map.from(state.orderProducts);
       final count = event.count;
       if (count == 0) {
-        items.remove(event.item);
+        products.remove(event.item);
       } else {
-        items[event.item] = count;
+        products[event.item] = count;
       }
       emit(
         state.copyWith(
-          orderItems: items,
-          price: _priceCounter(items),
+          orderProducts: products,
+          price: _priceCounter(products),
         ),
       );
     });
 
     on<PostOrder>((event, emit) async {
       emit(state.copyWith(status: OrderStatus.loading));
-      Map<ItemModel, int> items = Map.from(state.orderItems);
+      Map<ItemModel, int> products = Map.from(state.orderProducts);
       try {
-        await _repository.postOrder(items);
+        await _repository.postOrder(products);
         emit(
           state.copyWith(
             status: OrderStatus.success,
-            orderItems: <ItemModel, int>{},
+            orderProducts: <ItemModel, int>{},
           ),
         );
       } catch (_) {
@@ -56,7 +56,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<DeleteOrder>((event, emit) async {
       emit(
         state.copyWith(
-          orderItems: <ItemModel, int>{},
+          orderProducts: <ItemModel, int>{},
         ),
       );
     });
