@@ -3,33 +3,33 @@ part of 'order_bloc_bloc.dart';
 enum OrderStatus { loading, success, error, idle }
 
 final class OrderState extends Equatable {
-  final Map<ItemModel, int> orderItems;
+  final Map<ItemModel, int> orderProducts;
   final OrderStatus status;
   final double price;
 
   const OrderState({
     this.status = OrderStatus.idle,
-    required this.orderItems,
+    required this.orderProducts,
     this.price = 0,
   });
 
   OrderState copyWith({
     OrderStatus? status,
-    Map<ItemModel, int>? orderItems,
+    Map<ItemModel, int>? orderProducts,
     double? price,
   }) {
     return OrderState(
       status: status ?? this.status,
-      orderItems: orderItems ?? this.orderItems,
+      orderProducts: orderProducts ?? this.orderProducts,
       price: price ?? this.price,
     );
   }
 
   @override
   String toString() {
-    return '''OrderStatus { status: $status, orderItems: ${orderItems.length} }''';
+    return '''OrderStatus { status: $status, orderProducts: ${orderProducts.length}, fullcosts: $price}''';
   }
 
   @override
-  List<Object> get props => [status, orderItems, price,];
+  List<Object> get props => [status, orderProducts, price,];
 }

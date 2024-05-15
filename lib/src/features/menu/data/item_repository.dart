@@ -8,8 +8,11 @@ import 'package:flutter_coffee_shop/src/features/menu/models/item_model.dart';
 import 'package:flutter_coffee_shop/src/features/menu/utils/item_mapper.dart';
 
 abstract interface class IItemsRepository {
-  Future<List<ItemModel>> loadItems(
-      {required CategoryModel category, int page = 0, int limit = 25,});
+  Future<List<ItemModel>> loadItems({
+    required CategoryModel category,
+    int page = 0,
+    int limit = 25,
+  });
 }
 
 final class ItemsRepository implements IItemsRepository {
@@ -23,16 +26,25 @@ final class ItemsRepository implements IItemsRepository {
         _dbItemsDataSource = dbItemsDataSource;
 
   @override
-  Future<List<ItemModel>> loadItems(
-      {required CategoryModel category, int page = 0, int limit = 25,}) async {
+  Future<List<ItemModel>> loadItems({
+    required CategoryModel category,
+    int page = 0,
+    int limit = 25,
+  }) async {
     var dtos = <ItemDto>[];
     try {
       dtos = await _networkItemsDataSource.fetchItems(
-          categoryId: category.id, page: page, limit: limit,);
+        categoryId: category.id,
+        page: page,
+        limit: limit,
+      );
       _dbItemsDataSource.saveItems(items: dtos);
     } on SocketException {
       dtos = await _dbItemsDataSource.fetchItems(
-          categoryId: category.id, page: page, limit: limit,);
+        categoryId: category.id,
+        page: page,
+        limit: limit,
+      );
     }
     return dtos.map((e) => e.toModel()).toList();
   }

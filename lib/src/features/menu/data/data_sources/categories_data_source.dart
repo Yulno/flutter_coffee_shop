@@ -16,17 +16,19 @@ class NetworkCategoriesDataSource implements ICategoriesDataSource {
     try {
       final response = await _dio.get('/products/categories');
       if (response.statusCode == 200) {
-        final data = response.data['data'] as List;
-        return data.map((i) => CategoryDto.fromJSON(i as Map<String, dynamic>)).toList();
+        final data = response.data['data'];
+        if (data is! List) throw const FormatException();
+        return data
+            .map((i) => CategoryDto.fromJSON(i as Map<String, dynamic>))
+            .toList();
       } else {
-        throw Exception('Failed to fetch categories');
+        throw const HttpException('/categories');
       }
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionError) {
         throw const SocketException('/products/categories');
-      } else {
-        rethrow;
       }
+      rethrow;
     }
   }
 }
