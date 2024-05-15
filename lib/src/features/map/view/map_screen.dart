@@ -8,6 +8,7 @@ import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter_coffee_shop/src/theme/image_sources.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 const Point _city = Point(
   latitude: 54.98,
@@ -34,74 +35,91 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-        body: YandexMap(
-          onMapCreated: (controller) async {
-            _mapController = controller;
-            _mapController.moveCamera(
+    return Scaffold(
+      body: YandexMap(
+        onMapCreated: (controller) async {
+          _mapController = controller;
+          _mapController.moveCamera(
+            CameraUpdate.newCameraPosition(
+              const CameraPosition(
+                target: _city,
+                zoom: 50,
+              ),
+            ),
+          );
+          await _initLocationLayer();
+        },
+        mapObjects: _points,
+        onUserLocationAdded: (view) async {
+          _userLocation = await _mapController.getUserCameraPosition();
+          if (_userLocation != null) {
+            await _mapController.moveCamera(
               CameraUpdate.newCameraPosition(
-                const CameraPosition(
-                  target: _city,
-                  zoom: 10,
-                ),
+                _userLocation!.copyWith(zoom: 10),
+              ),
+              animation: const MapAnimation(
+                type: MapAnimationType.linear,
+                duration: 0.3,
               ),
             );
-          },
-          mapObjects: _points,
-          onUserLocationAdded: (view) async {
-            _userLocation = await _mapController.getUserCameraPosition();
-            if (_userLocation != null) {
-              await _mapController.moveCamera(
-                CameraUpdate.newCameraPosition(
-                  _userLocation!.copyWith(zoom: 10),
-                ),
-                animation: const MapAnimation(
-                  type: MapAnimationType.linear,
-                  duration: 0.3,
-                ),
-              );
-            }
-            return view.copyWith(
-              pin: view.pin.copyWith(
-                opacity: 1,
+          }
+          return view.copyWith(
+            pin: view.pin.copyWith(
+              opacity: 1,
+            ),
+          );
+        },
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            FloatingActionButton.small(
+              onPressed: () => Navigator.pop(context),
+              backgroundColor: AppColors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
-            );
-          },
+              child: const Icon(
+                Icons.arrow_back,
+                size: 20,
+              ),
+            ),
+            const Spacer(),
+            FloatingActionButton.small(
+              onPressed: () => _navigateToLocationList(context),
+              backgroundColor: AppColors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.map_outlined,
+                size: 20,
+              ),
+            ),
+          ],
         ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            children: [
-              FloatingActionButton.small(
-                onPressed: () => Navigator.pop(context),
-                backgroundColor: AppColors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(
-                  Icons.arrow_back,
-                  size: 20,
-                ),
-              ),
-              const Spacer(),
-              FloatingActionButton.small(
-                onPressed: () => _navigateToLocationList(context),
-                backgroundColor: AppColors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(
-                  Icons.map_outlined,
-                  size: 20,
-                ),
-              ),
-            ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+    );
+  }
+
+  Future<void> _initLocationLayer() async {
+    final bool locationPermissionIsGranted =
+        await Permission.location.request().isGranted;
+
+    if (locationPermissionIsGranted) {
+      await _mapController.toggleUserLayer(visible: true);
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.noPermission),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
-      );
+        );
+      });
     }
-  
+  }
 
   List<PlacemarkMapObject> _getPlacemarkObjects(BuildContext context) {
     List<LocationModel>? locations = context.read<MapBloc>().state.locations;
@@ -129,7 +147,7 @@ class _MapScreenState extends State<MapScreen> {
                         latitude: point.latitude,
                         longitude: point.longitude,
                       ),
-                      zoom: 10,
+                      zoom: 50,
                     ),
                   ),
                   animation: const MapAnimation(
@@ -163,8 +181,8 @@ class _MapScreenState extends State<MapScreen> {
       MaterialPageRoute(
         builder: (_) => BlocProvider.value(
           value: context.read<MapBloc>(),
-          child: AddresesList(
-            addreses:
+          child: AddressesList(
+            addresses:
                 context.read<MapBloc>().state.locations ?? <LocationModel>[],
           ),
         ),

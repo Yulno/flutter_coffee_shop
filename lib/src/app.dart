@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/map/bloc/map_bloc_bloc.dart';
+import 'package:flutter_coffee_shop/src/features/map/data/data_sourses/locations_data_sourse.dart';
+import 'package:flutter_coffee_shop/src/features/map/data/data_sourses/savable_locations_data_sourses.dart';
 import 'package:flutter_coffee_shop/src/features/map/data/map_repository.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/order/order_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/menu/menu_bloc_bloc.dart';
@@ -31,6 +33,13 @@ class CoffeeShopApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<ILocationsRepository>(
+          create: (context) => LocationsRepository(
+            networkLocationsDataSource:
+                NetworkLocationsDataSource(dio: dio),
+            dbLocationsDataSource: DbLocationsDataSource(db: db),
+          ),
+        ),
         RepositoryProvider<IOrderRepository>(
           create: (context) => OrderRepository(
             networkOrderDataSource: NetworkOrdersDataSource(dio: dio),
@@ -67,14 +76,15 @@ class CoffeeShopApp extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) => MenuBloc(
-                context.read<ICategoriesRepository>(),
                 context.read<IItemsRepository>(),
+                context.read<ICategoriesRepository>(),
+                
               )..add(
                   const LoadCategoryEvent(),
                 ),
             ),
             BlocProvider(
-              create: (context) => MapBloc(context.read<ILocationsRepository>())
+              create: (context) => MapBloc(context.read<ILocationsRepository>(),)
                 ..add(const LoadMapEvent()),
             ),
           ],

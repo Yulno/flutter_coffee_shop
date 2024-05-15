@@ -4,22 +4,20 @@ import 'package:flutter_coffee_shop/src/features/map/bloc/map_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/map/models/location_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class AddresesList extends StatelessWidget {
+class AddressesList extends StatelessWidget {
   final List<LocationModel> addresses;
 
-  const AddresesList({super.key, required this.addresses});
+  const AddressesList({super.key, required this.addresses});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: SizedBox(
+               SizedBox(
                   height: 52,
                   child: Row(
                     children: [
@@ -30,17 +28,16 @@ class AddresesList extends StatelessWidget {
                             Icons.arrow_back,
                             size: 20,
                           ),
-                          onTap: () => Navigator.of(context).pop(),
+                          onTap: () => Navigator.of(context)..pop()..pop(),
                         ),
                       ),
                       Text(
                         AppLocalizations.of(context)!.ourShops,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                     ],
                   ),
                 ),
-              ),
               const Divider(),
               Expanded(
                 child: ListView.builder(
@@ -60,7 +57,7 @@ class AddresesList extends StatelessWidget {
                           context.read<MapBloc>().add(
                                 LoadLocationsEvent(addresses[index]),
                               );
-                          Navigator.of(context).pop(addresses[index]);
+                          Navigator.of(context)..pop(addresses[index])..pop(addresses[index]);
                         },
                       ),
                     );

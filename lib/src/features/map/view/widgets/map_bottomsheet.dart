@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/map/bloc/map_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/map/models/location_model.dart';
+import 'package:flutter_coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapBottomSheet extends StatelessWidget {
@@ -12,7 +13,7 @@ class MapBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 142,
+      height: 152,
       child: Padding(
         padding: const EdgeInsets.only(
           bottom: 24,
@@ -27,7 +28,7 @@ class MapBottomSheet extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   location.address,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
               ),
             ),
@@ -36,19 +37,20 @@ class MapBottomSheet extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   context.read<MapBloc>().add(LoadLocationsEvent(location));
-                  Navigator.of(context).pop(location);
+                  Navigator.of(context)..pop(location)..pop(location);
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.maxFinite, 56),
                   padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: AppColors.blue,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+                    borderRadius: BorderRadius.circular(16),),
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.choose,
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
+                
               ),
             ),
           ],
