@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_coffee_shop/src/features/menu/models/coffee_card_model.dart';
-import 'package:flutter_coffee_shop/src/features/menu/models/coffee_title_model.dart';
-import 'package:flutter_coffee_shop/src/features/menu/view/widgets/coffee_card.dart';
+import 'package:flutter_coffee_shop/src/features/menu/models/item_model.dart';
+import 'package:flutter_coffee_shop/src/features/menu/models/category_model.dart';
+import 'package:flutter_coffee_shop/src/features/menu/view/widgets/item.dart';
 
 class Category extends StatelessWidget {
   final CategoryModel category;
-  final List<CoffeeCardModel> cards;
-  const Category({super.key, required this.cards, required this.category});
+  final List<ItemModel> items;
+  const Category({super.key, required this.items, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class Category extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Text(
-            category.categoryName,
+            category.slug,
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
@@ -30,9 +30,9 @@ class Category extends StatelessWidget {
             crossAxisSpacing: 16.0,
             mainAxisExtent: 196,
           ),
-          itemCount: cards.length,
+          itemCount: items.length,
           itemBuilder: (context, index) {
-            return CoffeeCard(card: cards[index]);
+            return Item(item: items[index]);
           },
         ),
       ],

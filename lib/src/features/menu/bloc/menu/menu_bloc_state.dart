@@ -4,28 +4,28 @@ enum MenuStatus { loading, success, error, idle }
 
 final class MenuState extends Equatable {
   final MenuStatus status = MenuStatus.idle;
-  final List<CategoryModel>? categories;
-  final List<CoffeeCardModel>? items;
+  final List<CategoryModel> categories;
+  final List<ItemModel> products;
 
-  const MenuState({required this.categories, required this.items,  required MenuStatus status,});
+  const MenuState({required this.categories, required this.products,  required MenuStatus status,});
 
   MenuState copyWith({
     List<CategoryModel>? categories,
-    List<CoffeeCardModel>? items,
+    List<ItemModel>? products,
     MenuStatus? status,
   }) {
     return MenuState(
       status: status ?? this.status,
       categories: categories ?? this.categories,
-      items: items ?? this.items,
+      products: products ?? this.products,
     );
   }
 
   @override
   String toString() {
-    return '''MenuStatus { status: $status, categories: ${categories?.length}, items: ${items?.length} }''';
+    return '''MenuStatus { status: $status, categories: ${categories.length}, products: ${products.length} }''';
   }
 
   @override
-  List<Object?> get props => [status, categories, items];
+  List<Object?> get props => [status, categories, products];
 }

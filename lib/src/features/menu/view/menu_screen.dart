@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_coffee_shop/src/features/menu/bloc/cart/cart_bloc_bloc.dart';
+import 'package:flutter_coffee_shop/src/features/menu/bloc/order/order_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/menu/menu_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/view/widgets/bottomsheet.dart';
 import 'package:flutter_coffee_shop/src/features/menu/view/widgets/category.dart';
@@ -90,13 +90,13 @@ class _MenuScreenState extends State<MenuScreen> {
                     child: ScrollablePositionedList.builder(
                       itemScrollController: _appBarController,
                       scrollDirection: Axis.horizontal,
-                      itemCount: state.categories!.length,
+                      itemCount: state.categories.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(4),
                           child: ElevatedButton(
                             onPressed: () {
-                              context.read<MenuBloc>().state.categories![index];
+                              context.read<MenuBloc>().state.categories[index];
                               setCurrent(index);
                               menuScrollToCategory(index);
                               appBarScrollToCategory(index);
@@ -108,7 +108,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                   : AppColors.white,
                             ),
                             child: Text(
-                              state.categories![index].categoryName,
+                              state.categories[index].slug,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -131,21 +131,21 @@ class _MenuScreenState extends State<MenuScreen> {
                   itemScrollController: _menuController,
                   itemPositionsListener: itemListener,
                   itemBuilder: (context, index) {
-                    final category = state.categories![index];
-                    final cards = state.items!
+                    final category = state.categories[index];
+                    final cards = state.products
                         .where((e) => e.category.id == category.id)
                         .toList();
                     return Category(
                       category: category,
-                      cards: cards,
+                      items: cards,
                     );
                   },
-                  itemCount: state.categories!.length,
+                  itemCount: state.categories.length,
                 ),
               ),
-              floatingActionButton: BlocBuilder<CartBloc, CartState>(
+              floatingActionButton: BlocBuilder<OrderBloc, OrderState>(
                 builder: (context, state) {
-                  if (state.cartItems.isNotEmpty) {
+                  if (state.orderProducts.isNotEmpty) {
                     return FloatingActionButton(
                       backgroundColor: AppColors.blue,
                       onPressed: () => {
@@ -153,8 +153,8 @@ class _MenuScreenState extends State<MenuScreen> {
                           backgroundColor: AppColors.white,
                           context: context,
                           builder: (_) => BlocProvider.value(
-                            value: BlocProvider.of<CartBloc>(context),
-                            child: const CartBottomSheet(),
+                            value: BlocProvider.of<OrderBloc>(context),
+                            child: const OrderBottomSheet(),
                           ),
                         ),
                       },
