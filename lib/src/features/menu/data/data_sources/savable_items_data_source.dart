@@ -70,16 +70,9 @@ final class DbItemsDataSource implements ISavableItemsDataSource {
     final category = await (_db.select(_db.categories)
           ..where((e) => e.id.equals(item.categoryId)))
         .getSingle();
-    return ItemDto(
-      id: item.id,
-      name: item.name,
-      icon: item.icon,
-      price: item.price,
-      description: item.description,
-      category: CategoryDto(
-        id: category.id,
-        slug: category.slug,
-      ),
+    return ItemDto.fromDB(
+      item,
+      category,
     );
   }
 }

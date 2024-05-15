@@ -16,11 +16,7 @@ final class DbLocationsDataSource implements ISavableLocationsDataSource {
   Future<List<LocationDto>> fetchLocations() async {
     final result = await (_db.select(_db.locations)).get();
     return List<LocationDto>.of(
-      result.map((location) => LocationDto(
-            address: location.address,
-            latitude: location.latitude,
-            longitude: location.longitude,
-          ),),
+      result.map((location) => LocationDto.fromDB(location)),
     );
   }
 

@@ -33,4 +33,15 @@ class ItemDto {
       category: CategoryDto.fromJSON(json['category'] as Map<String, dynamic>),
     );
   }
+
+  factory ItemDto.fromDB(item, category) {
+    return ItemDto(
+      id: item.id as int,
+      name: item.name as String,
+      description: item.description as String,
+      icon: item.icon as String,
+      price: item.price as double,
+      category: CategoryDto(id: category.id as int, slug: category.slug as String),
+    );
+  }
 }
