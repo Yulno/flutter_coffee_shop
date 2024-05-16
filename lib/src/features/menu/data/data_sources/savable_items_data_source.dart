@@ -30,16 +30,9 @@ final class DbItemsDataSource implements ISavableItemsDataSource {
             ..where((u) => u.id.equals(item.categoryId)))
           .getSingle();
       data.add(
-        ItemDto(
-          id: item.id,
-          name: item.name,
-          icon: item.icon,
-          price: item.price,
-          description: item.description,
-          category: CategoryDto(
-            id: category.id,
-            slug: category.slug,
-          ),
+        ItemDto.fromDB(
+          item,
+          category,
         ),
       );
     }

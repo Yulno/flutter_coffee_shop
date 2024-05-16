@@ -198,15 +198,6 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _categoryIdMeta =
-      const VerificationMeta('categoryId');
-  @override
-  late final GeneratedColumn<int> categoryId = GeneratedColumn<int>(
-      'category_id', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES categories (id)'));
   static const VerificationMeta _iconMeta = const VerificationMeta('icon');
   @override
   late final GeneratedColumn<String> icon = GeneratedColumn<String>(
@@ -217,9 +208,18 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
   late final GeneratedColumn<double> price = GeneratedColumn<double>(
       'price', aliasedName, false,
       type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _categoryIdMeta =
+      const VerificationMeta('categoryId');
+  @override
+  late final GeneratedColumn<int> categoryId = GeneratedColumn<int>(
+      'category_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES categories (id)'));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, description, categoryId, icon, price];
+      [id, name, description, icon, price, categoryId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -247,14 +247,6 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
     } else if (isInserting) {
       context.missing(_descriptionMeta);
     }
-    if (data.containsKey('category_id')) {
-      context.handle(
-          _categoryIdMeta,
-          categoryId.isAcceptableOrUnknown(
-              data['category_id']!, _categoryIdMeta));
-    } else if (isInserting) {
-      context.missing(_categoryIdMeta);
-    }
     if (data.containsKey('icon')) {
       context.handle(
           _iconMeta, icon.isAcceptableOrUnknown(data['icon']!, _iconMeta));
@@ -266,6 +258,14 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
           _priceMeta, price.isAcceptableOrUnknown(data['price']!, _priceMeta));
     } else if (isInserting) {
       context.missing(_priceMeta);
+    }
+    if (data.containsKey('category_id')) {
+      context.handle(
+          _categoryIdMeta,
+          categoryId.isAcceptableOrUnknown(
+              data['category_id']!, _categoryIdMeta));
+    } else if (isInserting) {
+      context.missing(_categoryIdMeta);
     }
     return context;
   }
@@ -282,12 +282,12 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
-      categoryId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}category_id'])!,
       icon: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}icon'])!,
       price: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}price'])!,
+      categoryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}category_id'])!,
     );
   }
 
@@ -301,25 +301,25 @@ class Item extends DataClass implements Insertable<Item> {
   final int id;
   final String name;
   final String description;
-  final int categoryId;
   final String icon;
   final double price;
+  final int categoryId;
   const Item(
       {required this.id,
       required this.name,
       required this.description,
-      required this.categoryId,
       required this.icon,
-      required this.price});
+      required this.price,
+      required this.categoryId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
     map['description'] = Variable<String>(description);
-    map['category_id'] = Variable<int>(categoryId);
     map['icon'] = Variable<String>(icon);
     map['price'] = Variable<double>(price);
+    map['category_id'] = Variable<int>(categoryId);
     return map;
   }
 
@@ -328,9 +328,9 @@ class Item extends DataClass implements Insertable<Item> {
       id: Value(id),
       name: Value(name),
       description: Value(description),
-      categoryId: Value(categoryId),
       icon: Value(icon),
       price: Value(price),
+      categoryId: Value(categoryId),
     );
   }
 
@@ -341,9 +341,9 @@ class Item extends DataClass implements Insertable<Item> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       description: serializer.fromJson<String>(json['description']),
-      categoryId: serializer.fromJson<int>(json['categoryId']),
       icon: serializer.fromJson<String>(json['icon']),
       price: serializer.fromJson<double>(json['price']),
+      categoryId: serializer.fromJson<int>(json['categoryId']),
     );
   }
   @override
@@ -353,9 +353,9 @@ class Item extends DataClass implements Insertable<Item> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'description': serializer.toJson<String>(description),
-      'categoryId': serializer.toJson<int>(categoryId),
       'icon': serializer.toJson<String>(icon),
       'price': serializer.toJson<double>(price),
+      'categoryId': serializer.toJson<int>(categoryId),
     };
   }
 
@@ -363,16 +363,16 @@ class Item extends DataClass implements Insertable<Item> {
           {int? id,
           String? name,
           String? description,
-          int? categoryId,
           String? icon,
-          double? price}) =>
+          double? price,
+          int? categoryId}) =>
       Item(
         id: id ?? this.id,
         name: name ?? this.name,
         description: description ?? this.description,
-        categoryId: categoryId ?? this.categoryId,
         icon: icon ?? this.icon,
         price: price ?? this.price,
+        categoryId: categoryId ?? this.categoryId,
       );
   @override
   String toString() {
@@ -380,16 +380,16 @@ class Item extends DataClass implements Insertable<Item> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('description: $description, ')
-          ..write('categoryId: $categoryId, ')
           ..write('icon: $icon, ')
-          ..write('price: $price')
+          ..write('price: $price, ')
+          ..write('categoryId: $categoryId')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, name, description, categoryId, icon, price);
+      Object.hash(id, name, description, icon, price, categoryId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -397,53 +397,53 @@ class Item extends DataClass implements Insertable<Item> {
           other.id == this.id &&
           other.name == this.name &&
           other.description == this.description &&
-          other.categoryId == this.categoryId &&
           other.icon == this.icon &&
-          other.price == this.price);
+          other.price == this.price &&
+          other.categoryId == this.categoryId);
 }
 
 class ItemsCompanion extends UpdateCompanion<Item> {
   final Value<int> id;
   final Value<String> name;
   final Value<String> description;
-  final Value<int> categoryId;
   final Value<String> icon;
   final Value<double> price;
+  final Value<int> categoryId;
   const ItemsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.description = const Value.absent(),
-    this.categoryId = const Value.absent(),
     this.icon = const Value.absent(),
     this.price = const Value.absent(),
+    this.categoryId = const Value.absent(),
   });
   ItemsCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     required String description,
-    required int categoryId,
     required String icon,
     required double price,
+    required int categoryId,
   })  : name = Value(name),
         description = Value(description),
-        categoryId = Value(categoryId),
         icon = Value(icon),
-        price = Value(price);
+        price = Value(price),
+        categoryId = Value(categoryId);
   static Insertable<Item> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? description,
-    Expression<int>? categoryId,
     Expression<String>? icon,
     Expression<double>? price,
+    Expression<int>? categoryId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (description != null) 'description': description,
-      if (categoryId != null) 'category_id': categoryId,
       if (icon != null) 'icon': icon,
       if (price != null) 'price': price,
+      if (categoryId != null) 'category_id': categoryId,
     });
   }
 
@@ -451,16 +451,16 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       {Value<int>? id,
       Value<String>? name,
       Value<String>? description,
-      Value<int>? categoryId,
       Value<String>? icon,
-      Value<double>? price}) {
+      Value<double>? price,
+      Value<int>? categoryId}) {
     return ItemsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
-      categoryId: categoryId ?? this.categoryId,
       icon: icon ?? this.icon,
       price: price ?? this.price,
+      categoryId: categoryId ?? this.categoryId,
     );
   }
 
@@ -476,14 +476,14 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
-    if (categoryId.present) {
-      map['category_id'] = Variable<int>(categoryId.value);
-    }
     if (icon.present) {
       map['icon'] = Variable<String>(icon.value);
     }
     if (price.present) {
       map['price'] = Variable<double>(price.value);
+    }
+    if (categoryId.present) {
+      map['category_id'] = Variable<int>(categoryId.value);
     }
     return map;
   }
@@ -494,9 +494,9 @@ class ItemsCompanion extends UpdateCompanion<Item> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('description: $description, ')
-          ..write('categoryId: $categoryId, ')
           ..write('icon: $icon, ')
-          ..write('price: $price')
+          ..write('price: $price, ')
+          ..write('categoryId: $categoryId')
           ..write(')'))
         .toString();
   }
@@ -727,6 +727,7 @@ class LocationsCompanion extends UpdateCompanion<Location> {
 
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
+  _$AppDatabaseManager get managers => _$AppDatabaseManager(this);
   late final $CategoriesTable categories = $CategoriesTable(this);
   late final $ItemsTable items = $ItemsTable(this);
   late final $LocationsTable locations = $LocationsTable(this);
@@ -737,3 +738,390 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities =>
       [categories, items, locations];
 }
+
+typedef $$CategoriesTableInsertCompanionBuilder = CategoriesCompanion Function({
+  Value<int> id,
+  required String slug,
+});
+typedef $$CategoriesTableUpdateCompanionBuilder = CategoriesCompanion Function({
+  Value<int> id,
+  Value<String> slug,
+});
+
+class $$CategoriesTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $CategoriesTable,
+    Category,
+    $$CategoriesTableFilterComposer,
+    $$CategoriesTableOrderingComposer,
+    $$CategoriesTableProcessedTableManager,
+    $$CategoriesTableInsertCompanionBuilder,
+    $$CategoriesTableUpdateCompanionBuilder> {
+  $$CategoriesTableTableManager(_$AppDatabase db, $CategoriesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$CategoriesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$CategoriesTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$CategoriesTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String> slug = const Value.absent(),
+          }) =>
+              CategoriesCompanion(
+            id: id,
+            slug: slug,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            required String slug,
+          }) =>
+              CategoriesCompanion.insert(
+            id: id,
+            slug: slug,
+          ),
+        ));
+}
+
+class $$CategoriesTableProcessedTableManager extends ProcessedTableManager<
+    _$AppDatabase,
+    $CategoriesTable,
+    Category,
+    $$CategoriesTableFilterComposer,
+    $$CategoriesTableOrderingComposer,
+    $$CategoriesTableProcessedTableManager,
+    $$CategoriesTableInsertCompanionBuilder,
+    $$CategoriesTableUpdateCompanionBuilder> {
+  $$CategoriesTableProcessedTableManager(super.$state);
+}
+
+class $$CategoriesTableFilterComposer
+    extends FilterComposer<_$AppDatabase, $CategoriesTable> {
+  $$CategoriesTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get slug => $state.composableBuilder(
+      column: $state.table.slug,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ComposableFilter itemsRefs(
+      ComposableFilter Function($$ItemsTableFilterComposer f) f) {
+    final $$ItemsTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $state.db.items,
+        getReferencedColumn: (t) => t.categoryId,
+        builder: (joinBuilder, parentComposers) => $$ItemsTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.items, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $$CategoriesTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase, $CategoriesTable> {
+  $$CategoriesTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get slug => $state.composableBuilder(
+      column: $state.table.slug,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$ItemsTableInsertCompanionBuilder = ItemsCompanion Function({
+  Value<int> id,
+  required String name,
+  required String description,
+  required String icon,
+  required double price,
+  required int categoryId,
+});
+typedef $$ItemsTableUpdateCompanionBuilder = ItemsCompanion Function({
+  Value<int> id,
+  Value<String> name,
+  Value<String> description,
+  Value<String> icon,
+  Value<double> price,
+  Value<int> categoryId,
+});
+
+class $$ItemsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $ItemsTable,
+    Item,
+    $$ItemsTableFilterComposer,
+    $$ItemsTableOrderingComposer,
+    $$ItemsTableProcessedTableManager,
+    $$ItemsTableInsertCompanionBuilder,
+    $$ItemsTableUpdateCompanionBuilder> {
+  $$ItemsTableTableManager(_$AppDatabase db, $ItemsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$ItemsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$ItemsTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $$ItemsTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> description = const Value.absent(),
+            Value<String> icon = const Value.absent(),
+            Value<double> price = const Value.absent(),
+            Value<int> categoryId = const Value.absent(),
+          }) =>
+              ItemsCompanion(
+            id: id,
+            name: name,
+            description: description,
+            icon: icon,
+            price: price,
+            categoryId: categoryId,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            required String description,
+            required String icon,
+            required double price,
+            required int categoryId,
+          }) =>
+              ItemsCompanion.insert(
+            id: id,
+            name: name,
+            description: description,
+            icon: icon,
+            price: price,
+            categoryId: categoryId,
+          ),
+        ));
+}
+
+class $$ItemsTableProcessedTableManager extends ProcessedTableManager<
+    _$AppDatabase,
+    $ItemsTable,
+    Item,
+    $$ItemsTableFilterComposer,
+    $$ItemsTableOrderingComposer,
+    $$ItemsTableProcessedTableManager,
+    $$ItemsTableInsertCompanionBuilder,
+    $$ItemsTableUpdateCompanionBuilder> {
+  $$ItemsTableProcessedTableManager(super.$state);
+}
+
+class $$ItemsTableFilterComposer
+    extends FilterComposer<_$AppDatabase, $ItemsTable> {
+  $$ItemsTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get icon => $state.composableBuilder(
+      column: $state.table.icon,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get price => $state.composableBuilder(
+      column: $state.table.price,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$CategoriesTableFilterComposer get categoryId {
+    final $$CategoriesTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.categoryId,
+        referencedTable: $state.db.categories,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$CategoriesTableFilterComposer(ComposerState($state.db,
+                $state.db.categories, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $$ItemsTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase, $ItemsTable> {
+  $$ItemsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get icon => $state.composableBuilder(
+      column: $state.table.icon,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get price => $state.composableBuilder(
+      column: $state.table.price,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$CategoriesTableOrderingComposer get categoryId {
+    final $$CategoriesTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.categoryId,
+        referencedTable: $state.db.categories,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder, parentComposers) =>
+            $$CategoriesTableOrderingComposer(ComposerState($state.db,
+                $state.db.categories, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$LocationsTableInsertCompanionBuilder = LocationsCompanion Function({
+  required String address,
+  required double latitude,
+  required double longitude,
+  Value<int> rowid,
+});
+typedef $$LocationsTableUpdateCompanionBuilder = LocationsCompanion Function({
+  Value<String> address,
+  Value<double> latitude,
+  Value<double> longitude,
+  Value<int> rowid,
+});
+
+class $$LocationsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $LocationsTable,
+    Location,
+    $$LocationsTableFilterComposer,
+    $$LocationsTableOrderingComposer,
+    $$LocationsTableProcessedTableManager,
+    $$LocationsTableInsertCompanionBuilder,
+    $$LocationsTableUpdateCompanionBuilder> {
+  $$LocationsTableTableManager(_$AppDatabase db, $LocationsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$LocationsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$LocationsTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$LocationsTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<String> address = const Value.absent(),
+            Value<double> latitude = const Value.absent(),
+            Value<double> longitude = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              LocationsCompanion(
+            address: address,
+            latitude: latitude,
+            longitude: longitude,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required String address,
+            required double latitude,
+            required double longitude,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              LocationsCompanion.insert(
+            address: address,
+            latitude: latitude,
+            longitude: longitude,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$LocationsTableProcessedTableManager extends ProcessedTableManager<
+    _$AppDatabase,
+    $LocationsTable,
+    Location,
+    $$LocationsTableFilterComposer,
+    $$LocationsTableOrderingComposer,
+    $$LocationsTableProcessedTableManager,
+    $$LocationsTableInsertCompanionBuilder,
+    $$LocationsTableUpdateCompanionBuilder> {
+  $$LocationsTableProcessedTableManager(super.$state);
+}
+
+class $$LocationsTableFilterComposer
+    extends FilterComposer<_$AppDatabase, $LocationsTable> {
+  $$LocationsTableFilterComposer(super.$state);
+  ColumnFilters<String> get address => $state.composableBuilder(
+      column: $state.table.address,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get latitude => $state.composableBuilder(
+      column: $state.table.latitude,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get longitude => $state.composableBuilder(
+      column: $state.table.longitude,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$LocationsTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase, $LocationsTable> {
+  $$LocationsTableOrderingComposer(super.$state);
+  ColumnOrderings<String> get address => $state.composableBuilder(
+      column: $state.table.address,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get latitude => $state.composableBuilder(
+      column: $state.table.latitude,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get longitude => $state.composableBuilder(
+      column: $state.table.longitude,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+class _$AppDatabaseManager {
+  final _$AppDatabase _db;
+  _$AppDatabaseManager(this._db);
+  $$CategoriesTableTableManager get categories =>
+      $$CategoriesTableTableManager(_db, _db.categories);
+  $$ItemsTableTableManager get items =>
+      $$ItemsTableTableManager(_db, _db.items);
+  $$LocationsTableTableManager get locations =>
+      $$LocationsTableTableManager(_db, _db.locations);
+}
+
+
+

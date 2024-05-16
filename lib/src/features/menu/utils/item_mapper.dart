@@ -7,8 +7,8 @@ extension ItemMapper on ItemDto {
         id: id,
         name: name,
         description: description,
-        price: price,
         icon: icon,
+        price: price,
         category: category.toModel(),
       );
 }

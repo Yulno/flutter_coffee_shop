@@ -40,8 +40,8 @@ class NetworkItemsDataSource implements IItemsDataSource {
       } else {
         throw HttpException('/products with categoryId = $categoryId');
       }
-    } on DioException catch (_) {
-      if (_.type == DioExceptionType.connectionError) {
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionError) {
         throw SocketException('/products with categoryId = $categoryId');
       }
       rethrow;
