@@ -16,7 +16,7 @@ class CategoryDto {
     );
   }
   
-  factory CategoryDto.fromDB(Category category) {
+  static fromDB(Category category) {
     return CategoryDto(slug: category.slug, id: category.id);
   }
 }
