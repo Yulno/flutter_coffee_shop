@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_coffee_shop/src/common/data_base/database.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/items_data_source.dart';
-import 'package:flutter_coffee_shop/src/features/menu/models/dto/category_dto.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/dto/item_dto.dart';
 
 abstract interface class ISavableItemsDataSource implements IItemsDataSource {

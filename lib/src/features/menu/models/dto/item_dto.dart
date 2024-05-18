@@ -1,4 +1,3 @@
-import 'package:flutter_coffee_shop/src/common/data_base/database.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/dto/category_dto.dart';
 
 class ItemDto {
@@ -35,14 +34,14 @@ class ItemDto {
     );
   }
 
-  factory ItemDto.fromDB(Item item, Category category) {
+  factory ItemDto.fromDB(item, category) {
     return ItemDto(
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      icon: item.icon,
-      price: item.price,
-      category: CategoryDto(id: category.id, slug: category.slug),
+      id: item.id  as int,
+      name: item.name as String,
+      description: item.description as String,
+      icon: item.icon as String,
+      price: item.price as double,
+      category: CategoryDto(id: category.id  as int, slug: category.slug as String),
     );
   }
 }

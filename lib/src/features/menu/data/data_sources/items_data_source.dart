@@ -52,12 +52,8 @@ class NetworkItemsDataSource implements IItemsDataSource {
   Future<ItemDto> fetchItem({required int itemId}) async {
     try {
       final response = await _dio.get('products/$itemId');
-      if (response.statusCode == 200) {
-        final data = response.data['data'];
-        return ItemDto.fromJSON(data as Map<String, dynamic>);
-      } else {
-        throw HttpException('/products/$itemId');
-      }
+      final data = response.data['data'];
+      return ItemDto.fromJSON(data as Map<String, dynamic>);
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionError) {
         throw SocketException('/products/$itemId');
