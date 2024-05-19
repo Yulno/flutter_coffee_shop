@@ -1,16 +1,66 @@
-# flutter_course
+# flutter_coffee_shop
 
-A new Flutter project.
+## LAB 1 Menu Screen
+- категории товаров скроллятся в горизонтальном направлении
+- при нажатии на кнопку категории, она приобретает стиль активной, а контент на главном экране автоматически прокручивается до раздела с выбранной категорией
+- каждый товар представлен в виде карточки с фото, описанием и ценой продукта
+- ширина подбирается автоматически так, чтобы вся картинка была видна, нигде не обрезалась и не нарушала горизонтальный отступ
+- при нажатии на кнопку цены товара, появляется счетчик, позволяющий выбрать определенное количество товара (от 1 до 10). Если количество товара достигает нуля, кнопка возвращается к исходному состоянию
+- при прокрутке, происходит смена категорий и навигация на выбранную категорию
+<div style="display: flex;">
+  <img src="README_img/1lab.png" alt="Image 1" style="flex: 1;">
+</div>
 
-## Getting Started
+## LAB 2 Order Screen
+- кнопка с корзиной, которая появляется при добавлении товара
+- по кнопке с корзиной открывается BottomSheet с позициями заказа
+- по кнопке удаления корзина очищается и закрывается BottomSheet
+- по кнопке "Оформить заказ" отправляется post-запрос
+- если post-запрос завершается с ошибкой, отображается SnackBar с ошибкой
+- получение данных с сервера
+<div style="display: flex;">
+  <img src="README_img/2lab_1.png" alt="Image 1" style="flex: 1;">
+  <img src="README_img/2lab_2.png" alt="Image 2" style="flex: 1;">
+  <img src="README_img/2lab_3.png" alt="Image 3" style="flex: 1;">
+</div>
 
-This project is a starting point for a Flutter application.
+## LAB 3 Data Base
+- после загрузки данных с апи происходит сохранение данных в бд
+- данные с бд берутся, если доступа в сеть нет
+- данные с бд имеют пагинацию
+- созданы необходимые репозитории и дата сорсы, разделяющие функционал получения и сохранения данных
 
-A few resources to get you started if this is your first Flutter project:
+## LAB 4 Map Screen
+- добавлена кнопка с выбранной локацией на MenuScreen
+- по кнопке с выбранной локацией открывается карта MapScreen
+- выбранная локация записывается с помощью shared_preferences
+- если локация не выбрана, отображается первая
+- на MapScreen определяется локация пользователя
+- по кнопке "выбрать" открывается BottomSheet с адресами
+- при выборе адреса возвращение на MenuScreen, кнопка отображает выбранный адрес
+- созданы экраны с картой и адресами, соответствующие виджеты, модели, блок
+- после загрузки локациий с апи происходит сохранение в бд, для этого созданы необходимые репозитории и дата сорсы
+<div style="display: flex;">
+  <img src="README_img/1.jpg" alt="Image 1" style="flex: 1;">
+  <img src="README_img/2.jpg" alt="Image 2" style="flex: 1;">
+  <img src="README_img/3.jpg" alt="Image 3" style="flex: 1;">
+  <img src="README_img/4.jpg" alt="Image 2" style="flex: 1;">
+  <img src="README_img/5.jpg" alt="Image 3" style="flex: 1;">
+</div>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## LAB 5 Push Notifications
+- установлен FCM
+- создан FCM проект, firebase конфигурация и уведомления
+- получен токен FCM
+- создан .apk и установлен на устройство
+- добавлены локальные уведомления с иконкой
+<div style="display: flex;">
+  <img src="README_img/screen3.jpg" alt="Image 1" style="flex: 1;">
+  <img src="README_img/screen4.jpg" alt="Image 2" style="flex: 1;">
+  <img src="README_img/screen5.jpg" alt="Image 3" style="flex: 1;">
+</div>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Заупск
+flutter pub upgrade --major-versions
+flutter pub get
+flutter run
