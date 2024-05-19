@@ -7,9 +7,9 @@
 - ширина подбирается автоматически так, чтобы вся картинка была видна, нигде не обрезалась и не нарушала горизонтальный отступ
 - при нажатии на кнопку цены товара, появляется счетчик, позволяющий выбрать определенное количество товара (от 1 до 10). Если количество товара достигает нуля, кнопка возвращается к исходному состоянию
 - при прокрутке, происходит смена категорий и навигация на выбранную категорию
-<div style="display: flex;">
-  <img src="README_img/1lab.png" alt="Image 1" style="flex: 1;">
-</div>
+<p>
+  <img width="220" src="README_img/1lab.png" alt="Image 1" style="flex: 1;">
+</p>
 
 ## LAB 2 Order Screen
 - кнопка с корзиной, которая появляется при добавлении товара
@@ -18,11 +18,11 @@
 - по кнопке "Оформить заказ" отправляется post-запрос
 - если post-запрос завершается с ошибкой, отображается SnackBar с ошибкой
 - получение данных с сервера
-<div style="display: flex;">
-  <img src="README_img/2lab_1.png" alt="Image 1" style="flex: 1;">
-  <img src="README_img/2lab_2.png" alt="Image 2" style="flex: 1;">
-  <img src="README_img/2lab_3.png" alt="Image 3" style="flex: 1;">
-</div>
+<p>
+  <img width="220" src="README_img/2lab_1.png" alt="Image 1" style="flex: 1;">
+  <img width="220" src="README_img/2lab_2.png" alt="Image 2" style="flex: 1;">
+  <img width="220" src="README_img/2lab_3.png" alt="Image 3" style="flex: 1;">
+</p>
 
 ## LAB 3 Data Base
 - после загрузки данных с апи происходит сохранение данных в бд
@@ -40,15 +40,13 @@
 - при выборе адреса возвращение на MenuScreen, кнопка отображает выбранный адрес
 - созданы экраны с картой и адресами, соответствующие виджеты, модели, блок
 - после загрузки локациий с апи происходит сохранение в бд, для этого созданы необходимые репозитории и дата сорсы
-<div style="display: flex;">
-  <img src="README_img/1.jpg" alt="Image 1" style="flex: 1;">
-  <img src="README_img/2.jpg" alt="Image 2" style="flex: 1;">
-  <img src="README_img/3.jpg" alt="Image 3" style="flex: 1;">
-</div>
-<div style="display: flex;">
-  <img src="README_img/4.jpg" alt="Image 2" style="flex: 1;">
-  <img src="README_img/5.jpg" alt="Image 3" style="flex: 1;">
-</div>
+<p>
+  <img width="180" src="README_img/1.jpg" alt="Image 1" style="flex: 1;">
+  <img width="180" src="README_img/2.jpg" alt="Image 2" style="flex: 1;">
+  <img width="180" src="README_img/3.jpg" alt="Image 3" style="flex: 1;">
+  <img width="180" src="README_img/4.jpg" alt="Image 2" style="flex: 1;">
+  <img width="180" src="README_img/5.jpg" alt="Image 3" style="flex: 1;">
+</p>
 
 ## LAB 5 Push Notifications
 - установлен FCM
@@ -56,11 +54,11 @@
 - получен токен FCM
 - создан .apk и установлен на устройство
 - добавлены локальные уведомления с иконкой
-<div style="display: flex;">
-  <img src="README_img/screen3.jpg" alt="Image 1" style="flex: 1;">
-  <img src="README_img/screen4.jpg" alt="Image 2" style="flex: 1;">
-  <img src="README_img/screen5.jpg" alt="Image 3" style="flex: 1;">
-</div>
+<p>
+  <img width="220" src="README_img/screen3.jpg" alt="Image 1" style="flex: 1;">
+  <img width="220" src="README_img/screen4.jpg" alt="Image 2" style="flex: 1;">
+  <img width="220" src="README_img/screen5.jpg" alt="Image 3" style="flex: 1;">
+</p>
 
 # Заупск
 flutter pub upgrade --major-versions
