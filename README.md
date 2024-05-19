@@ -44,6 +44,8 @@
   <img src="README_img/1.jpg" alt="Image 1" style="flex: 1;">
   <img src="README_img/2.jpg" alt="Image 2" style="flex: 1;">
   <img src="README_img/3.jpg" alt="Image 3" style="flex: 1;">
+</div>
+<div style="display: flex;">
   <img src="README_img/4.jpg" alt="Image 2" style="flex: 1;">
   <img src="README_img/5.jpg" alt="Image 3" style="flex: 1;">
 </div>
