@@ -1,0 +1,29 @@
+{
+    "project_info": {
+      "project_number": "980843434832",
+      "project_id": "flutter-coffee-shop-3954f",
+      "storage_bucket": "flutter-coffee-shop-3954f.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:980843434832:android:b51c88dcdb0904ebbf9255",
+          "android_client_info": {
+            "package_name": "com.example.flutter_coffee_shop"
+          }
+        },
+        "oauth_client": [],
+        "api_key": [
+          {
+            "current_key": "AIzaSyD_QYUBM22ES03GVU9ENvfN3_JLYnwXx50"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": []
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
