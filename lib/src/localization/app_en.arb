@@ -1,0 +1,13 @@
+{
+    "title": "Coffee Shop",
+    "yourOrder": "Your order",
+    "order": "Place an order",
+    "success": "Order created",
+    "error": "An error occured when ordering",
+    "choose": "Choose",
+    "ourShops": "Our coffee shops",
+    "noLocation": "Chooseе the address",
+    "noPermission": "Geolocation isn't defined",
+    "openPushTitle": "Order created",
+    "openPushBody": "Your order has been created and will be waiting for you at..."
+}
