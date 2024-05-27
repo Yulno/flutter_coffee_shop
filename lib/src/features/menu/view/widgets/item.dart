@@ -163,7 +163,7 @@ class _ItemState extends State<Item> {
                                     );
                               },
                               child: Text(
-                                '${widget.item.price} руб',
+                                '${widget.item.price} ₽',
                                 style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ),

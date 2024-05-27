@@ -10,9 +10,10 @@ class OrderBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold( body:  Padding(
-        padding:
-            const EdgeInsets.all(10),
+    return Scaffold(
+      backgroundColor: AppColors.primaryWhite,
+      body: Padding(
+        padding: const EdgeInsets.only(left: 10, bottom: 10, right: 10),
         child: Column(
           children: [
             Row(
@@ -24,8 +25,7 @@ class OrderBottomSheet extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    context.read<OrderBloc>()
-                        .add(const DeleteOrder());
+                    context.read<OrderBloc>().add(const DeleteOrder());
                     Navigator.of(context).pop();
                   },
                   icon: const Icon(Icons.delete),
@@ -85,14 +85,9 @@ class OrderBottomSheet extends StatelessWidget {
                 ),
               ),
             ),
-        
           ],
         ),
       ),
-      
-      
-      
-      
     );
   }
 }

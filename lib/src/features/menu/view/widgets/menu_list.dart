@@ -65,10 +65,10 @@ class BottomSheetTile extends StatelessWidget {
         style: Theme.of(context).textTheme.titleMedium,
       ),
       trailing: Text(
-        "${item.price} руб",
+        "${item.price} ₽",
         style: Theme.of(context)
             .textTheme
-            .bodySmall
+            .bodyLarge
             ?.copyWith(color: AppColors.black),
       ),
     );
