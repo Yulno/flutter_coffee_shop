@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -45,5 +48,24 @@ class LocalNotification {
     } on Exception catch (e) {
       debugPrint(e.toString());
     }
+  }
+  
+  static void showDummyNotification(Duration delay) async {
+    Timer(delay, () async {
+    String openPushTitle = "Заказ создан";
+    String openPushBody = "Ваш заказ создан и будет ожидать вас по адресу...";
+    await _notificationsPlugin.show(
+      Random().nextInt(100000),
+      openPushTitle,
+      openPushBody,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          _channel.id,
+          _channel.name,
+          icon: '@drawable/notification_icon',
+        ),
+        ),
+      );
+    });
   }
 }

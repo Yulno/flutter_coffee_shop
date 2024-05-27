@@ -12,7 +12,6 @@ import 'package:firebase_core/firebase_core.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 void main() async {
-  
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     Bloc.observer = const Observer();
@@ -38,11 +37,10 @@ void main() async {
     FirebaseMessaging.onMessage
         .listen((message) => LocalNotification.display(message));
 
+    LocalNotification.showDummyNotification(const Duration(seconds: 15));
+
     runApp(const CoffeeShopApp());
   }, (error, stack) {
     log(error.toString(), name: 'App Error', stackTrace: stack);
   });
 }
-
-
-
