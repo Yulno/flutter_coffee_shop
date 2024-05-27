@@ -29,17 +29,23 @@ class _MenuScreenState extends State<MenuScreen> {
     super.initState();
     itemListener = ItemPositionsListener.create();
     itemListener.itemPositions.addListener(() {
-      final fullVisible = itemListener.itemPositions.value.firstWhere((item) {
-        return item.itemLeadingEdge >= 0;
-      }).index;
-
-      if (((fullVisible != current) && inProgress != true) &&
-          scrolledToBottom == false) {
-        setCurrent(fullVisible);
-        appBarScrollToCategory(fullVisible);
+      if (itemListener.itemPositions.value.isNotEmpty &&
+          inProgress != true &&
+          current != itemListener.itemPositions.value.first.index) {
+        setCurrent(itemListener.itemPositions.value.first.index);
+        appBarScrollToCategory(itemListener.itemPositions.value.first.index);
       }
-
-      if (scrolledToBottom) {
+      bool needToPaginate =
+          itemListener.itemPositions.value.last.itemTrailingEdge <= 3 &&
+              inProgress != true &&
+              context
+                  .read<MenuBloc>()
+                  .state
+                  .products
+                  .where((e) => e.category.id == current + 2)
+                  .toList()
+                  .isEmpty;
+      if (needToPaginate) {
         context.read<MenuBloc>().add(const LoadPageEvent());
       }
     });
@@ -160,7 +166,7 @@ class _MenuScreenState extends State<MenuScreen> {
               floatingActionButton: BlocBuilder<OrderBloc, OrderState>(
                 builder: (context, state) {
                   if (state.orderProducts.isNotEmpty) {
-                    return FloatingActionButton(
+                    return FloatingActionButton.extended(
                       backgroundColor: AppColors.blue,
                       onPressed: () => {
                         showModalBottomSheet(
@@ -173,9 +179,13 @@ class _MenuScreenState extends State<MenuScreen> {
                           ),
                         ),
                       },
-                      child: const Icon(
+                      icon: const Icon(
                         Icons.local_mall,
                         color: AppColors.white,
+                      ),
+                      label: Text(
+                        '${state.price.floor()} ₽',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.white),
                       ),
                     );
                   }

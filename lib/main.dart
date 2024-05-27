@@ -37,7 +37,7 @@ void main() async {
     FirebaseMessaging.onMessage
         .listen((message) => LocalNotification.display(message));
 
-    LocalNotification.showDummyNotification(const Duration(seconds: 15));
+    LocalNotification.showDummyNotification(const Duration(seconds: 20));
 
     runApp(const CoffeeShopApp());
   }, (error, stack) {
