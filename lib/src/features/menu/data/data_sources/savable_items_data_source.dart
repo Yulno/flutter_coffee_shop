@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:flutter_coffee_shop/src/features/menu/data/data_base/database.dart';
+import 'package:flutter_coffee_shop/src/common/data_base/database.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/items_data_source.dart';
-import 'package:flutter_coffee_shop/src/features/menu/models/dto/category_dto.dart';
 import 'package:flutter_coffee_shop/src/features/menu/models/dto/item_dto.dart';
 
 abstract interface class ISavableItemsDataSource implements IItemsDataSource {
@@ -30,6 +29,7 @@ final class DbItemsDataSource implements ISavableItemsDataSource {
             ..where((u) => u.id.equals(item.categoryId)))
           .getSingle();
       data.add(
+<<<<<<< HEAD
         ItemDto(
           id: item.id,
           name: item.name,
@@ -40,6 +40,11 @@ final class DbItemsDataSource implements ISavableItemsDataSource {
             id: category.id,
             slug: category.slug,
           ),
+=======
+        ItemDto.fromDB(
+          item,
+          category,
+>>>>>>> feature/lab-4_map_screen
         ),
       );
     }
@@ -70,6 +75,7 @@ final class DbItemsDataSource implements ISavableItemsDataSource {
     final category = await (_db.select(_db.categories)
           ..where((e) => e.id.equals(item.categoryId)))
         .getSingle();
+<<<<<<< HEAD
     return ItemDto(
       id: item.id,
       name: item.name,
@@ -80,6 +86,11 @@ final class DbItemsDataSource implements ISavableItemsDataSource {
         id: category.id,
         slug: category.slug,
       ),
+=======
+    return ItemDto.fromDB(
+      item,
+      category,
+>>>>>>> feature/lab-4_map_screen
     );
   }
 }

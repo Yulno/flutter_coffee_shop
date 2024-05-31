@@ -27,7 +27,11 @@ final class OrderState extends Equatable {
 
   @override
   String toString() {
+<<<<<<< HEAD
     return '''OrderStatus { status: $status, orderProducts: ${orderProducts.length} }''';
+=======
+    return '''OrderStatus { status: $status, orderProducts: ${orderProducts.length}, fullcosts: $price}''';
+>>>>>>> feature/lab-4_map_screen
   }
 
   @override

@@ -16,13 +16,26 @@ class Categories extends Table {
 class Items extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
+<<<<<<< HEAD:lib/src/features/menu/data/data_base/database.dart
+=======
+  TextColumn get description => text()();
+>>>>>>> feature/lab-4_map_screen:lib/src/common/data_base/database.dart
   TextColumn get icon => text()();
   TextColumn get description => text()();
   RealColumn get price => real()();
   IntColumn get categoryId => integer().references(Categories, #id)();
 }
 
-@DriftDatabase(tables: [Categories, Items])
+class Locations extends Table {
+  TextColumn get address => text()();
+  RealColumn get latitude => real()();
+  RealColumn get longitude => real()();
+
+  @override
+  Set<Column> get primaryKey => {address};
+}
+
+@DriftDatabase(tables: [Categories, Items, Locations])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
@@ -42,4 +55,3 @@ LazyDatabase _openConnection() {
     return NativeDatabase.createInBackground(file);
   });
 }
-

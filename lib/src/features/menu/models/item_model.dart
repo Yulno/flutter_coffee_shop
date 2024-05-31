@@ -5,6 +5,10 @@ class ItemModel {
   final String name;
   final String icon;
   final String description;
+<<<<<<< HEAD
+=======
+  final String icon;
+>>>>>>> feature/lab-4_map_screen
   final double price;
   final CategoryModel category;
 
@@ -13,6 +17,10 @@ class ItemModel {
     required this.name,
     required this.icon,
     required this.description,
+<<<<<<< HEAD
+=======
+    required this.icon,
+>>>>>>> feature/lab-4_map_screen
     required this.price,
     required this.category,
   });

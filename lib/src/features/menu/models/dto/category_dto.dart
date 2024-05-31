@@ -1,3 +1,5 @@
+import 'package:flutter_coffee_shop/src/common/data_base/database.dart';
+
 class CategoryDto {
   final String slug;
   final int id;
@@ -12,5 +14,9 @@ class CategoryDto {
       slug: json['slug'] as String,
       id: json['id'] as int,
     );
+  }
+  
+  static fromDB(Category category) {
+    return CategoryDto(slug: category.slug, id: category.id);
   }
 }
