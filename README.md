@@ -66,7 +66,7 @@
 - data is saved to the DB after downloading from the API
 - data is taken from the DB if there is no access to the network
 - data from the DB is paginated
-- created repositories and data sourses, its share the functionality of receiving and saving data
+- created repositories and data sources, its share the functionality of receiving and saving data
 
 ## LAB 4 Map Screen
 - added location button on MenuScreen
@@ -75,8 +75,8 @@
 - if the location is not selected, the first one is displayed
 - the user's location is determined on MapScreen
 - when you select the address, you return on the MenuScreen and the button displays the selected address
-- created widgets, models, bloc for screens with map and addreses
-- locations is saved to the DB after downloading from the API, created repositories and data sourses for this
+- created widgets, models, bloc for screens with map and addresses
+- locations is saved to the DB after downloading from the API, created repositories and data sources for this
 <p>
   <img width="180" src="README_img/6_1.jpg" alt="Image 1" style="flex: 1;">
   <img width="180" src="README_img/2.jpg" alt="Image 2" style="flex: 1;">
