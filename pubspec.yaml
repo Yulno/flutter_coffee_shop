@@ -26,13 +26,13 @@ dependencies:
   sqflite: ^2.3.3+1
   path_provider: ^2.0.0
   path: ^1.9.0
-<<<<<<< HEAD
-=======
   location: ^6.0.1
   yandex_mapkit: ^4.0.2
   shared_preferences: ^2.2.3
   permission_handler: ^11.3.1
->>>>>>> feature/lab-4_map_screen
+  firebase_core: ^2.31.0
+  firebase_messaging: ^14.9.2
+  flutter_local_notifications: ^17.1.1
   
 dev_dependencies:
   flutter_test:

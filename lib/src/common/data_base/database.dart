@@ -16,14 +16,10 @@ class Categories extends Table {
 class Items extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
-<<<<<<< HEAD:lib/src/features/menu/data/data_base/database.dart
-=======
   TextColumn get description => text()();
->>>>>>> feature/lab-4_map_screen:lib/src/common/data_base/database.dart
-  TextColumn get icon => text()();
-  TextColumn get description => text()();
-  RealColumn get price => real()();
   IntColumn get categoryId => integer().references(Categories, #id)();
+  TextColumn get icon => text()();
+  RealColumn get price => real()();
 }
 
 class Locations extends Table {

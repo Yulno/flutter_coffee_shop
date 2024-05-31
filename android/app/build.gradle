@@ -1,5 +1,8 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -49,6 +52,7 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -66,4 +70,8 @@ flutter {
 
 dependencies {
     implementation 'com.yandex.android:maps.mobile:4.2.2-full'
+    implementation 'com.google.firebase:firebase-messaging:23.3.0'
+    implementation 'com.google.firebase:firebase-analytics:21.4.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

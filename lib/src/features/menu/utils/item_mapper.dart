@@ -6,15 +6,9 @@ extension ItemMapper on ItemDto {
   ItemModel toModel() => ItemModel(
         id: id,
         name: name,
-<<<<<<< HEAD
         price: price,
         icon: icon,
         description: description,
-=======
-        description: description,
-        icon: icon,
-        price: price,
->>>>>>> feature/lab-4_map_screen
         category: category.toModel(),
       );
 }

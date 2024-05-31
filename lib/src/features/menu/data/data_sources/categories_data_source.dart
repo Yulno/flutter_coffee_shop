@@ -15,23 +15,13 @@ class NetworkCategoriesDataSource implements ICategoriesDataSource {
   Future<List<CategoryDto>> fetchCategories() async {
     try {
       final response = await _dio.get('/products/categories');
-<<<<<<< HEAD
-      if (response.statusCode == 200) {
+      
         final data = response.data['data'];
         if (data is! List) throw const FormatException();
         return data
             .map((i) => CategoryDto.fromJSON(i as Map<String, dynamic>))
             .toList();
-      } else {
-        throw const HttpException('/categories');
-      }
-=======
-      final data = response.data['data'];
-      if (data is! List) throw const FormatException();
-      return data
-          .map((i) => CategoryDto.fromJSON(i as Map<String, dynamic>))
-          .toList();
->>>>>>> feature/lab-4_map_screen
+      
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionError) {
         throw const SocketException('/products/categories');

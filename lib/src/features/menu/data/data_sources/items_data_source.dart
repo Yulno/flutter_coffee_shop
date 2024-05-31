@@ -40,8 +40,8 @@ class NetworkItemsDataSource implements IItemsDataSource {
       } else {
         throw HttpException('/products with categoryId = $categoryId');
       }
-    } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionError) {
+    } on DioException catch (_) {
+      if (_.type == DioExceptionType.connectionError) {
         throw SocketException('/products with categoryId = $categoryId');
       }
       rethrow;
@@ -52,17 +52,10 @@ class NetworkItemsDataSource implements IItemsDataSource {
   Future<ItemDto> fetchItem({required int itemId}) async {
     try {
       final response = await _dio.get('products/$itemId');
-<<<<<<< HEAD
-      if (response.statusCode == 200) {
+      
         final data = response.data['data'];
         return ItemDto.fromJSON(data as Map<String, dynamic>);
-      } else {
-        throw HttpException('/products/$itemId');
-      }
-=======
-      final data = response.data['data'];
-      return ItemDto.fromJSON(data as Map<String, dynamic>);
->>>>>>> feature/lab-4_map_screen
+      
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionError) {
         throw SocketException('/products/$itemId');

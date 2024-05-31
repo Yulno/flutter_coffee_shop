@@ -7,6 +7,8 @@ import 'package:flutter_coffee_shop/src/features/map/data/data_sourses/savable_l
 import 'package:flutter_coffee_shop/src/features/map/data/map_repository.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/order/order_bloc_bloc.dart';
 import 'package:flutter_coffee_shop/src/features/menu/bloc/menu/menu_bloc_bloc.dart';
+import 'package:flutter_coffee_shop/src/features/menu/data/order_repository.dart';
+import 'package:flutter_coffee_shop/src/features/menu/data/item_repository.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/category_repository.dart';
 import 'package:flutter_coffee_shop/src/common/data_base/database.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/categories_data_source.dart';
@@ -14,8 +16,6 @@ import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/items_da
 import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/order_data_source.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/savable_categories_data_source.dart';
 import 'package:flutter_coffee_shop/src/features/menu/data/data_sources/savable_items_data_source.dart';
-import 'package:flutter_coffee_shop/src/features/menu/data/item_repository.dart';
-import 'package:flutter_coffee_shop/src/features/menu/data/order_repository.dart';
 import 'package:flutter_coffee_shop/src/features/menu/view/menu_screen.dart';
 import 'package:flutter_coffee_shop/src/theme/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

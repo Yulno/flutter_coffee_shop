@@ -38,6 +38,7 @@ class AddressesList extends StatelessWidget {
                     ],
                   ),
                 ),
+              
               const Divider(),
               Expanded(
                 child: ListView.builder(

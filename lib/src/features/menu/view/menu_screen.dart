@@ -82,49 +82,6 @@ class _MenuScreenState extends State<MenuScreen> {
         if (state.status != MenuStatus.error) {
           return SafeArea(
             child: Scaffold(
-<<<<<<< HEAD
-              appBar: AppBar(
-                surfaceTintColor: Colors.transparent,
-                title: PreferredSize(
-                  preferredSize: const Size.fromHeight((40)),
-                  child: SizedBox(
-                    height: 40,
-                    child: ScrollablePositionedList.builder(
-                      itemScrollController: _appBarController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: state.categories.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.read<MenuBloc>().state.categories[index];
-                              setCurrent(index);
-                              menuScrollToCategory(index);
-                              appBarScrollToCategory(index);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shadowColor: AppColors.transparent,
-                              backgroundColor: index == current
-                                  ? AppColors.blue
-                                  : AppColors.white,
-                            ),
-                            child: Text(
-                              state.categories[index].slug,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    color: index == current
-                                        ? AppColors.white
-                                        : AppColors.black,
-                                  ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-=======
               appBar: PreferredSize(
                 preferredSize: const Size.fromHeight((94)),
                 child: Padding(
@@ -179,7 +136,6 @@ class _MenuScreenState extends State<MenuScreen> {
                         ),
                       ),
                     ],
->>>>>>> feature/lab-4_map_screen
                   ),
                 ),
               ),

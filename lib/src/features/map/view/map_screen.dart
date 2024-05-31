@@ -35,76 +35,76 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: YandexMap(
-        onMapCreated: (controller) async {
-          _mapController = controller;
-          _mapController.moveCamera(
-            CameraUpdate.newCameraPosition(
-              const CameraPosition(
-                target: _city,
-                zoom: 50,
-              ),
-            ),
-          );
-          await _initLocationLayer();
-        },
-        mapObjects: _points,
-        onUserLocationAdded: (view) async {
-          _userLocation = await _mapController.getUserCameraPosition();
-          if (_userLocation != null) {
-            await _mapController.moveCamera(
+      return Scaffold(
+        body: YandexMap(
+          onMapCreated: (controller) async {
+            _mapController = controller;
+            _mapController.moveCamera(
               CameraUpdate.newCameraPosition(
-                _userLocation!.copyWith(zoom: 10),
-              ),
-              animation: const MapAnimation(
-                type: MapAnimationType.linear,
-                duration: 0.3,
+                const CameraPosition(
+                  target: _city,
+                  zoom: 10,
+                ),
               ),
             );
-          }
-          return view.copyWith(
-            pin: view.pin.copyWith(
-              opacity: 1,
-            ),
-          );
-        },
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-          children: [
-            FloatingActionButton.small(
-              onPressed: () => Navigator.pop(context),
-              backgroundColor: AppColors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+            await _initLocationLayer();
+          },
+          mapObjects: _points,
+          onUserLocationAdded: (view) async {
+            _userLocation = await _mapController.getUserCameraPosition();
+            if (_userLocation != null) {
+              await _mapController.moveCamera(
+                CameraUpdate.newCameraPosition(
+                  _userLocation!.copyWith(zoom: 10),
+                ),
+                animation: const MapAnimation(
+                  type: MapAnimationType.linear,
+                  duration: 0.3,
+                ),
+              );
+            }
+            return view.copyWith(
+              pin: view.pin.copyWith(
+                opacity: 1,
               ),
-              child: const Icon(
-                Icons.arrow_back,
-                size: 20,
-              ),
-            ),
-            const Spacer(),
-            FloatingActionButton.small(
-              onPressed: () => _navigateToLocationList(context),
-              backgroundColor: AppColors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(
-                Icons.map_outlined,
-                size: 20,
-              ),
-            ),
-          ],
+            );
+          },
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
-    );
-  }
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              FloatingActionButton.small(
+                onPressed: () => Navigator.pop(context),
+                backgroundColor: AppColors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.arrow_back,
+                  size: 20,
+                ),
+              ),
+              const Spacer(),
+              FloatingActionButton.small(
+                onPressed: () => _navigateToLocationList(context),
+                backgroundColor: AppColors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.map_outlined,
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      );
+    }
 
-  Future<void> _initLocationLayer() async {
+    Future<void> _initLocationLayer() async {
     final bool locationPermissionIsGranted =
         await Permission.location.request().isGranted;
 
@@ -114,7 +114,7 @@ class _MapScreenState extends State<MapScreen> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.noPermission),
+            content: Text(AppLocalizations.of(context)!.noLocation),
           ),
         );
       });
