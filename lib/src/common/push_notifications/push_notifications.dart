@@ -50,12 +50,12 @@ class LocalNotification {
     }
   }
   
-  static void showDummyNotification(BuildContext context, Duration delay) async {
+  static void showDummyNotification(Duration delay) async {
     Timer(delay, () async {
     await _notificationsPlugin.show(
       Random().nextInt(100000),
-      AppLocalizations.of(context)!.openPushTitle,
-      AppLocalizations.of(context)!.openPushBody,
+      "Заказ создан",
+      "Ваш заказ создан и будет ожидать вас по адресу...",
       NotificationDetails(
         android: AndroidNotificationDetails(
           _channel.id,
