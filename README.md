@@ -108,3 +108,4 @@
 # Known issues
 - API key for MapKit is publicly available
 - When switching categories, cards take a long time to load
+- Strings in dummy notification are not localized
