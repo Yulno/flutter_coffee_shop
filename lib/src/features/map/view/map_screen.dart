@@ -114,7 +114,7 @@ class _MapScreenState extends State<MapScreen> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.noLocation),
+            content: Text(AppLocalizations.of(context)!.noPermission),
           ),
         );
       });

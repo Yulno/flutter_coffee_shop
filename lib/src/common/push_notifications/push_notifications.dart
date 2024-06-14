@@ -52,12 +52,10 @@ class LocalNotification {
   
   static void showDummyNotification(Duration delay) async {
     Timer(delay, () async {
-    String openPushTitle = "Заказ создан";
-    String openPushBody = "Ваш заказ создан и будет ожидать вас по адресу...";
     await _notificationsPlugin.show(
       Random().nextInt(100000),
-      openPushTitle,
-      openPushBody,
+      "Заказ создан",
+      "Ваш заказ создан и будет ожидать вас по адресу...",
       NotificationDetails(
         android: AndroidNotificationDetails(
           _channel.id,
